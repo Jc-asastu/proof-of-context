@@ -30,7 +30,7 @@ A specialization of the v0.6 framework to commercial inference-as-a-service. Pro
 - **Paper draft (working):** [paper-poc-inference-v0.1-pre1.md](paper-poc-inference-v0.1-pre1.md) — heart sections (§4 Four Dimensions, §5 Inference Receipt, §6 Threat Model) complete; surrounding sections forthcoming.
 - **Outline:** [paper-poc-inference-v0.1-outline.md](paper-poc-inference-v0.1-outline.md)
 - **Construction process:** [CASE-V0.7-EXTENSION.md](CASE-V0.7-EXTENSION.md) — complete record of the seven rounds of adversarial review that produced the heart sections.
-- **Companion benchmark:** [qwen-cloud-benchmark](https://github.com/asastuai/qwen-cloud-benchmark) — Qwen3 14B local-tier baseline complete; cloud sweep pending.
+- **Empirical companion (in private development):** cross-provider Qwen3 14B inference benchmark — local consumer-tier baseline complete (RTX 5070, 9 cells, methodology documented). Cloud sweep and full publication pending. Findings will be reported inline in §8 of the paper when the study is complete.
 - **Companion crate (forthcoming):** Phase 3 of [proof-of-context-impl](https://github.com/asastuai/proof-of-context-impl) will implement the InferenceReceipt module.
 - **Status:** v0.1 working draft published 2026-04-27; remaining sections in active writing.
 
@@ -87,7 +87,6 @@ Issues, corrections, replication reports, and co-authorship inquiries are welcom
 ## Related work (from the author)
 
 - [proof-of-context-impl](https://github.com/asastuai/proof-of-context-impl) — Rust reference implementation of the framework's primitives
-- [qwen-cloud-benchmark](https://github.com/asastuai/qwen-cloud-benchmark) — Empirical study of Qwen3 14B inference across GPU tiers, companion to v0.1's §8
 - [Hermetic Computing (kybalion)](https://github.com/asastuai/kybalion) — Rust framework formalizing the Seven Hermetic Principles as computational primitives
 - [intent-cipher](https://crates.io/crates/intent-cipher) — Research crate exploring intent-keyed stream ciphers (published v0.2 after public v0.1 reframe)
 - [SUR Protocol](https://github.com/asastuai/sur-protocol) — Perpetual futures DEX with agent-native execution layer (12 contracts, 531 Foundry tests)

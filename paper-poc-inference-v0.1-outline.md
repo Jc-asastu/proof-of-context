@@ -199,7 +199,7 @@
 
 7. **Why the illustration still matters.** Even without direct proof of cheating, the cost-variance data establishes that price comparison across providers gives the customer only one of the four dimensions §4 identifies. The other three (model variant, hardware tier, request handling) are absent from the comparison. That is sufficient motivation for adding a receipt layer that exposes them.
 
-7. **Pointer to the benchmark repository for replication.** Full code, data, and methodology in `github.com/asastuai/qwen-cloud-benchmark`.
+7. **Replication.** Methodology and key data points will be reported inline in §8 when the companion benchmark study reaches publication-grade completeness. The companion study is in private development at the time of this draft.
 
 **Connections:** §3 gave the cheating modalities; §8 illustrates the cost asymmetry that makes them exploitable. §10 names the divergence experiment as future work.
 
