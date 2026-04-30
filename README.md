@@ -11,7 +11,19 @@
 
 This repository hosts the Proof of Context family of papers — a small body of work that proposes attestation-based verification primitives for decentralized machine learning settings, framed as a complement to (not a replacement for) cryptographic proof systems like zkML.
 
-The family currently includes two papers:
+The family currently includes two papers and one wire-format specification:
+
+### Proof-of-Context Wire Format v0.1 — working specification
+
+Byte-level shape of a PoC attestation as it travels between protocol participants. Emerged from running the same primitive through four independent consumer surfaces and observing convergence. Promotes the convergence to a stable contract so independent integrators can interop without coordinating individually.
+
+- **Specification:** [SPEC-WIRE-FORMAT-v0.1.md](SPEC-WIRE-FORMAT-v0.1.md)
+- **Reference implementations:** Rust ([proof-of-context-impl](https://github.com/asastuai/proof-of-context-impl)), JavaScript (BaseOracle, TrustLayer), TypeScript (Vigil, PayClaw).
+- **Status:** v0.1 published 2026-04-30. All five reference implementations produce byte-identical canonical hashes and verify each other's signatures.
+
+---
+
+The family also includes two papers:
 
 ### Proof of Context (v0.6) — the framework paper
 
