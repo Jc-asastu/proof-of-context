@@ -13,7 +13,7 @@ This repository hosts the Proof of Context family of papers — a small body of 
 
 The family currently includes two papers and one wire-format specification:
 
-### Proof-of-Context Wire Format v0.1 — working specification
+### ◊ Proof-of-Context Wire Format v0.1 — working specification
 
 Byte-level shape of a PoC attestation as it travels between protocol participants. Emerged from running the same primitive through four independent consumer surfaces and observing convergence. Promotes the convergence to a stable contract so independent integrators can interop without coordinating individually.
 
@@ -90,7 +90,9 @@ For v0.1 applied:
 
 ## Status of the program
 
-This is independent research, conducted by a single author from Buenos Aires, in collaboration with AI tools (Claude Opus, Anthropic) used as adversarial reviewers and writing partners. The methodology of that collaboration is itself part of the public artifact — see [CASE-V0.7-EXTENSION.md](CASE-V0.7-EXTENSION.md) for the working record.
+This is independent research, conducted by a single author from Buenos Aires, in collaboration with AI tools (Claude Opus, Anthropic) used as adversarial reviewers and writing partners.
+
+※ The methodology of that collaboration is itself part of the public artifact. See [CASE-V0.7-EXTENSION.md](CASE-V0.7-EXTENSION.md) for the working record.
 
 Issues, corrections, replication reports, and co-authorship inquiries are welcome via GitHub Issues or direct contact.
 
@@ -115,3 +117,7 @@ Issues, corrections, replication reports, and co-authorship inquiries are welcom
 ## Contact
 
 Juan Cruz Maisu · [juancmaisu@outlook.com](mailto:juancmaisu@outlook.com) · [github.com/asastuai](https://github.com/asastuai) · [linkedin.com/in/juan-cruz-maisu-b4b610308](https://www.linkedin.com/in/juan-cruz-maisu-b4b610308/)
+
+---
+
+Juan Cruz Maisú ♥
