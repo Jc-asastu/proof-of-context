@@ -8,13 +8,35 @@
 
 ## §1 — Introduction
 
-- The settlement gate is the load-bearing primitive of the PoC framework. Why this paper exists alongside the panoramic Agent Economy paper.
-- The EVM constraint: no native Ed25519 precompile (RIP-7212 added secp256r1, not ed25519). Pure-Solidity Ed25519 costs ~500k gas per verify. This single fact determines the design space.
-- Three enforcement points exist on the spectrum from "free but no on-chain integrity" to "expensive but fully verifiable":
-  1. Off-chain only (SDK side, ~negligible cost, no on-chain claim).
-  2. **Record-then-check** (this paper's recommendation, ~88k gas per submit, ~11k gas per check).
-  3. On-chain Ed25519 (full integrity, ~500k gas per verify, prohibitive at scale).
-- Preview the central claim: in production agent-economy settings on EVM L2, the record-then-check model is the operationally honest tradeoff.
+*(authorial register: visual architecture, first-person. The introduction speaks in my voice. The heart sections that follow speak in standard academic register.)*
+
+The settlement gate is the load-bearing primitive of PoC.
+
+The framework formalizes attestations and what they bind. The wire format documents the shape they take in transit. The settlement gate is what enforces them.
+
+Without the gate, the framework is metadata.
+
+This paper focuses on the gate.
+
+There is a constraint that determines the design space. EVM has no native Ed25519 precompile. RIP-7212 added secp256r1, not ed25519. Pure-Solidity Ed25519 costs roughly 500k gas per verify on Base.
+
+That single fact opens a spectrum.
+
+Off-chain only. SDK verifies, no on-chain claim. Negligible cost. No on-chain integrity.
+
+Record-then-check. SDK verifies, on-chain contract records the result, settlement contracts query it. Roughly 88k gas per submit. Roughly 11k gas per check. The cost lands two orders of magnitude below naive on-chain verification.
+
+Naive on-chain. Solidity Ed25519 against the full payload. ~500k gas per verify. Full cryptographic integrity. Prohibitive at scale.
+
+i argue record-then-check is the operationally honest middle of that spectrum.
+
+The trust assumption shifts. From cryptography alone to operator allowlist plus revocation. That shift is acceptable when the operator set is auditable and revocation is fast.
+
+This paper makes that argument explicit. It documents the design choices. It models the threat surface. It reports gas measurements from a working reference implementation.
+
+The heart sections (§4 through §7) carry the technical specification in standard register. They specify the three enforcement modes. They lay out the trust calculus. They scope the threat model. They report the empirical observations.
+
+This introduction speaks in mine.
 
 ## §2 — Background
 
@@ -137,7 +159,27 @@ Reference implementation: PayClaw's `PoCVerifier.sol` (this work, Phase 7a).
 
 ## §11 — Conclusion
 
-The settlement gate is the load-bearing primitive of the PoC framework, and on EVM chains without an Ed25519 precompile its honest enforcement point is the record-then-check hybrid. The paper documents the rationale, the threat model, and the gas calculus that make this the right default. Integrators who adopt the model adopt the operator allowlist as the trust surface, and the paper makes that consequence fully explicit.
+*(authorial register: visual architecture, first-person.)*
+
+The settlement gate is the load-bearing primitive of PoC.
+
+On EVM chains without an Ed25519 precompile, the honest enforcement point is record-then-check.
+
+That is the central claim.
+
+The cost calculus is not mine to invent. Roughly 88k gas vs. roughly 500k gas is what the toolchain produces on Base, today, with the gas schedule current at submission time. Re-measure when the chain or the schedule changes.
+
+The trust surface is not mine to hide. Operator allowlist. Auditable. Revocable. Not zero-trust. The paper says this in §6 and again in §9 because it is the consequence integrators must take with them.
+
+What the paper offers is the rationale, fully explicit, so the consequence is adopted with eyes open.
+
+If you are an integrator weighing your gas budget against your trust assumptions, this is the spectrum. Pick where on it you want to live. The reference implementation is `PoCVerifier.sol`. Twelve Foundry tests passing. Composes with the wire format spec at v0.1.
+
+Build with eyes open.
+
+---
+
+Juan Cruz Maisú ♥
 
 ---
 

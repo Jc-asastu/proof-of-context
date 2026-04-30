@@ -8,10 +8,31 @@
 
 ## §1 — Introduction
 
-- Restate the gap from PoC v0.6: "attestation-as-verification" vs "attestation-as-settlement".
-- Observe the agent economy infrastructure stack as it exists in 2026: x402 paid endpoints, MCP tool calls, agent wallets, agent-native data oracles, agent reputation registries. None make attestations perishable.
-- Argue the gap is the same gap PoC v0.6 named, specialized to this layer.
-- Preview the convergence claim: four independent consumer surfaces produce the same wire format.
+*(authorial register: visual architecture, first-person, the introduction speaks in my voice. The heart sections that follow speak in standard academic register.)*
+
+PoC v0.6 named a gap.
+
+Attestation-as-verification is what existing primitives provide. Proof-of-learning. zkML. TEE attestations. Refereed delegation. Activation hashing. They all answer the same question: *did the computation happen correctly?*
+
+Attestation-as-settlement is the gap.
+
+It answers a different question. *Is the computation still worth settling on now?*
+
+The agent economy is where that question becomes urgent.
+
+Agents pay each other for data. Defer to each other for trust. Compose each other's outputs into settlement events. None of the primitives covering that surface bind freshness to payment. x402 lets agents pay. MCP lets agents tool. Reputation registries let agents accumulate history. Agent wallets let agents spend. Data oracles let agents read.
+
+None of them make attestations perishable.
+
+i argue the gap PoC v0.6 named is the same gap that opens here, specialized to a different surface.
+
+i argue further that running the same primitive through four independent consumer surfaces converges on a single wire format. The convergence happens because the underlying problem space is convergent. i document the convergence empirically and promote the result as a working specification.
+
+That is the paper.
+
+The heart sections (§4 through §7) speak in standard academic register. They specify the format. They calibrate the horizons. They model the threat. They report the empirical observations.
+
+This introduction speaks in mine.
 
 ## §2 — Background
 
@@ -101,9 +122,27 @@
 
 ## §10 — Conclusion
 
-- Restate the convergence claim.
-- The wire format is interoperability infrastructure for the agent economy that did not exist before, and it emerged because the underlying problem space converged.
-- The paper documents the contract that already holds across five implementations.
+*(authorial register: visual architecture, first-person.)*
+
+The wire format already holds.
+
+i did not invent it. i ran the primitive through four independent consumer surfaces and watched the format emerge. The convergence is not author craft. The convergence is the underlying problem space telling four implementations the same answer.
+
+What this paper does is name what already happened.
+
+It documents the contract. It publishes the spec. It puts a version number on the agreement so independent integrators can adopt it without coordinating.
+
+The agent economy needs interoperability infrastructure that does not yet exist as a stable contract. This paper is one offering of that contract. It is small. It will not solve everything. It is the format that emerged when i tried.
+
+If you are integrating, the spec lives at `SPEC-WIRE-FORMAT-v0.1.md`. The verification protocol is ten ordered checks. The rejection codes are structured. The reference implementations are five repositories. All five produce byte-identical canonical hashes.
+
+Adopt the format and the convergence widens.
+
+That is the contribution.
+
+---
+
+Juan Cruz Maisú ♥
 
 ---
 
