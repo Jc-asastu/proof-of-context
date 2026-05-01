@@ -1,0 +1,42 @@
+{
+  "spec_version": "0.1",
+  "description": "Cross-language test vectors for the Proof-of-Context wire format. Each vector specifies a payload and the expected canonical JSON serialization (sorted keys, no whitespace, RFC 8259) and the expected SHA-256 hash of the canonical JSON. Reference implementations across JavaScript, TypeScript, and Rust must all produce these exact values for the convergence claim of paper #2 (Agent Economy Infrastructure) §7.2 to hold empirically. Vectors are authoritative; if an implementation disagrees, the implementation has drifted from the spec.",
+  "spec_url": "https://github.com/asastuai/proof-of-context/blob/main/SPEC-WIRE-FORMAT-v0.1.md",
+  "vectors": [
+    {
+      "id": "v1-simple-flat",
+      "description": "Two-field flat object with mixed key alphabetic order. The canonical form sorts to price_usd then token. Tests basic key-sorting.",
+      "payload": {
+        "token": "ETH",
+        "price_usd": 2500
+      },
+      "expected_canonical_json": "{\"price_usd\":2500,\"token\":\"ETH\"}",
+      "expected_sha256_hex": "5525810608ca0d5ec814d45159e4f11e09a533061f04f4193850b3ca2fc5c453"
+    },
+    {
+      "id": "v2-nested-with-array",
+      "description": "Object with a nested object and an array. The canonical form must sort the outer keys, then sort the nested object's keys, while preserving array order. Tests recursive sorting.",
+      "payload": {
+        "feed": "ETH/USD",
+        "status": "healthy",
+        "metrics": { "staleness_seconds": 12, "deviation_pct": 0.014 },
+        "sources": ["chainlink", "pyth"]
+      },
+      "expected_canonical_json": "{\"feed\":\"ETH/USD\",\"metrics\":{\"deviation_pct\":0.014,\"staleness_seconds\":12},\"sources\":[\"chainlink\",\"pyth\"],\"status\":\"healthy\"}",
+      "expected_sha256_hex": "e37d05d4f5f4f3b18ecea8d7e0253aca799ad7e06d3f2c20b6b5cab39769443d"
+    },
+    {
+      "id": "v3-empty-object",
+      "description": "Empty object. Must canonicalize to the two-character JSON literal {}. Tests the boundary case.",
+      "payload": {},
+      "expected_canonical_json": "{}",
+      "expected_sha256_hex": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+    }
+  ],
+  "notes": [
+    "These vectors test the canonical JSON + SHA-256 stage of the wire format ONLY. Signature production is per-key and is tested in each implementation's own suite against a fixed test key.",
+    "Implementations that pass these three vectors are confirmed to share the canonical-hash construction. Implementations that fail any vector have drifted and the cross-implementation verification chain may be broken.",
+    "When v0.2 of the spec lands, vectors are added; existing vectors are not removed. The vector file is append-only across spec revisions.",
+    "Authoritative source: this file in the proof-of-context repository on the main branch."
+  ]
+}
