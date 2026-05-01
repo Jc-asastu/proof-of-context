@@ -216,7 +216,9 @@ We observe three concrete convergence facts across the five implementations.
 
 **F3. Cross-language signature verification.** A signature produced by the Rust crate over a test payload verifies under the JavaScript implementation in BaseOracle. The reverse also holds: a signature produced by BaseOracle verifies under PayClaw's TypeScript verifier. Cross-language verification is achieved without any compatibility shims; the algorithms are Ed25519 and SHA-256, both standardized, both available in each language's ecosystem.
 
-The three convergence facts together support the central conceptual claim of the paper: independent surfaces of the same primitive, when designed under shared constraints, converge on the same wire format.
+The three convergence facts together support a calibrated version of the central conceptual claim. We observe that four independent *surfaces* of the same primitive, implemented by the same author working from the published specification, converge on the same wire format. This demonstrates intra-author consistency under shared constraints. It does not, by itself, demonstrate that the wire format is structurally tight enough that any independent author would converge on the same shape; that stronger claim requires implementations by parties with no shared internal model of the spec. The replication experiment that would close that gap is identified in §9.
+
+We are explicit about this distinction because the strength of the claim governs the appropriate use of the wire format. Intra-author consistency is sufficient to publish the format as a stable contract for adoption by new integrators (the contract holds; integrators can build against it). Independent-author convergence would be required to claim that the format's shape is *necessary* rather than *one specific way of doing it*. The current paper supports the former and explicitly defers the latter.
 
 ### 7.3 Per-surface freshness horizon calibrations
 
