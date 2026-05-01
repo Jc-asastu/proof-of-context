@@ -101,7 +101,7 @@ Reference implementations:
 - JavaScript: `BaseOracle/src/utils/poc.js#canonicalHash`.
 - TypeScript: `payclaw/packages/sdk/src/poc.ts#canonicalHash`.
 
-All three produce byte-identical output for the same input.
+All JS/TS implementations produce byte-identical output for the same input. (The Rust crate uses a typed Merkle scheme over the same fields rather than canonical JSON — see §9.)
 
 ---
 
@@ -194,17 +194,19 @@ A `BaseOracle` price response with a fully populated `_poc` block:
 
 ## 9. Reference implementations
 
-The wire format is implemented identically across these repositories:
+The wire format is implemented across these repositories:
 
-| Repo | Language | Producer / Consumer | Path |
-|---|---|---|---|
-| [proof-of-context-impl](https://github.com/asastuai/proof-of-context-impl) | Rust | both | `src/commitment.rs`, `src/clients/` |
-| [BaseOracle](https://github.com/asastuai/BaseOracle) | JavaScript | producer | `src/utils/poc.js`, `src/utils/poc-anchors.js` |
-| [TrustLayer](https://github.com/asastuai/TrustLayer) | JavaScript | producer (multi-type) | `src/utils/poc.js`, `src/utils/poc-anchors.js` |
-| [Vigil](https://github.com/asastuai/vigil) | TypeScript | producer | `packages/core/src/poc.ts`, `packages/core/src/poc-anchors.ts` |
-| [PayClaw](https://github.com/asastuai/payclaw) | TypeScript | consumer (verifier) | `packages/sdk/src/poc.ts` |
+| Repo | Language | Producer / Consumer | Hashing scheme | Path |
+|---|---|---|---|---|
+| [proof-of-context-impl](https://github.com/asastuai/proof-of-context-impl) | Rust | both | typed Merkle (over fields) | `src/commitment.rs`, `src/clients/` |
+| [BaseOracle](https://github.com/asastuai/BaseOracle) | JavaScript | producer | canonical JSON + SHA-256 | `src/utils/poc.js`, `src/utils/poc-anchors.js` |
+| [TrustLayer](https://github.com/asastuai/TrustLayer) | JavaScript | producer (multi-type) | canonical JSON + SHA-256 | `src/utils/poc.js`, `src/utils/poc-anchors.js` |
+| [Vigil](https://github.com/asastuai/vigil) | TypeScript | producer | canonical JSON + SHA-256 | `packages/core/src/poc.ts`, `packages/core/src/poc-anchors.ts` |
+| [PayClaw](https://github.com/asastuai/payclaw) | TypeScript | consumer (verifier) | canonical JSON + SHA-256 | `packages/sdk/src/poc.ts` |
 
-All five produce byte-identical canonical hashes for the same payload and verify each other's signatures.
+The four JavaScript and TypeScript implementations produce byte-identical canonical-JSON SHA-256 hashes for the same payload and verify each other's signatures. Each one is tested against the authoritative test vectors at [`test-vectors/v0.1.json`](./test-vectors/v0.1.json) — three vectors covering the simple-flat, nested-with-array, and empty-object cases.
+
+The Rust reference crate uses a typed Merkle construction over the same conceptual fields (`weights_hash`, `tokenizer_hash`, etc.) rather than canonical JSON. Its hashes are therefore not byte-identical to the JS/TS implementations by design; the Rust crate is the type-and-architecture reference, while the JS/TS implementations are the wire-format-on-the-network reference. A typed-Merkle test-vector set covering the Rust construction may be added later as `test-vectors/v0.1-rust.json` if the Rust scheme stabilizes for cross-implementation use.
 
 ---
 
