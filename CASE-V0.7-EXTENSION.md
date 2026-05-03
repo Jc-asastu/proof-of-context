@@ -1,7 +1,11 @@
 # Case for PoC-Inference v0.1 — first applied paper of Proof of Context
 
-> **Audience:** Juan (decision-maker), Claude Classic (adversarial reviewer), and any future reader auditing why this paper was written.
-> **Status:** v2 of the case, post Classic round 2. Original case + 3 attacks accepted, plus 3 round-2 pushes accepted. This document is the working record.
+> **Authors and roles:** Three-party collaboration with two LLM instances of distinct cognitive temperament. **Juan Cruz Maisú** (independent researcher, Buenos Aires) brought the conceptual frame, arbitrated between proposed paths, and decided what entered each revision. The two LLMs, both Claude, played asymmetric roles: **Claude Code** (in-build instance) operated more analytically and constructively, advancing structure and proposing next moves; **Claude Classic** (separate instance) operated more intuitively and adversarially, pressing on premises and surfacing glamour traps. Reading the document as if Classic alone produced the critiques misses the structure. Two LLM minds with different temperaments iterated, with a human author choosing between them and reformulating when neither was right.
+>
+> **Audience:** future readers auditing why and how this paper was written.
+>
+> **Status:** v3 of the case, post Classic round 3. Original case + round-1 attacks + round-2 pushes + round-3 corrections accepted. This document is the working record.
+>
 > **Companion files:** [`paper-poc-inference-v0.1-abstract.md`](paper-poc-inference-v0.1-abstract.md), [`paper-poc-inference-v0.1-outline.md`](paper-poc-inference-v0.1-outline.md)
 
 ---
