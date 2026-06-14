@@ -25,14 +25,14 @@ Byte-level shape of a PoC attestation as it travels between protocol participant
 
 The family also includes two papers:
 
-### Proof of Context (v0.6): the framework paper
+### Proof of Context (v0.7): the framework paper
 
-The original position paper. Names the gap in decentralized-ML protocols where computations are verified for correctness but not for *contextual freshness*: was the right model used, on the right input, against the right state, and was the result settled before that context drifted? Introduces four freshness dimensions (computational, model, input, settlement), the execution-context-root construction, and the triple-anchor timestamp. Maps the structural analogue to DeFi's oracle-freshness problem (2020-2024).
+The original position paper. Names the gap in decentralized-ML protocols where computations are verified for correctness but not for *contextual freshness*: was the right model used, on the right input, against the right state, and was the result settled before that context drifted? Introduces four freshness dimensions (computational, model, input, settlement), the execution-context-root construction, and the triple-anchor timestamp. Maps the structural analogue to DeFi's oracle-freshness problem (2020-2024). As of v0.7 it also contains a formal model, a freshness-gated settlement soundness theorem for the enforced subset (§9), and a reference-implementation section reporting the v0.2 crate (§10).
 
 - **Paper (Markdown):** [paper/proof-of-context.md](paper/proof-of-context.md)
 - **Paper (PDF):** [paper/proof-of-context.pdf](paper/proof-of-context.pdf)
 - **Reference implementation (Phase 2):** [proof-of-context-impl](https://github.com/asastuai/proof-of-context-impl) — Rust crate with real cryptography (SHA-256 Merkle, Ed25519, MockCommitter, MockSettlementGate, end-to-end integration tests).
-- **Status:** v0.6, public-share-ready since April 2026.
+- **Status:** v0.7 (11 June 2026); position paper plus formal model, soundness theorem (Theorem 1), and a reference-implementation section. Public-share-ready.
 
 ### Proof of Context applied to Verifiable Inference (v0.1): first applied paper
 
@@ -50,7 +50,7 @@ A specialization of the v0.6 framework to commercial inference-as-a-service. Pro
 
 ## How to read this work
 
-If you want the full framework, please read **v0.6** first ([paper/proof-of-context.md](paper/proof-of-context.md)). It is a complete position paper.
+If you want the full framework, please read **v0.7** first ([paper/proof-of-context.md](paper/proof-of-context.md)). It is a complete position paper; §9 adds the formal model and a soundness theorem, and §10 reports the reference implementation.
 
 If you are interested in commercial inference attestation specifically, please read the **v0.1 abstract** plus **§4-§6 of v0.1** ([paper-poc-inference-v0.1-pre1.md](paper-poc-inference-v0.1-pre1.md)). These three sections present the complete conceptual contribution. The surrounding sections (introduction, background, problem statement, implementation, empirical illustration, limitations, future work, conclusion) are scaffolded in the outline and will populate in subsequent revisions.
 
@@ -67,9 +67,9 @@ Both papers are citable. For v0.6:
   title={Proof-of-Context: The Missing Verification Layer in Decentralized ML Protocols},
   author={Maisu, Juan Cruz},
   year={2026},
-  month={4},
+  month={6},
   howpublished={Position paper, \url{https://github.com/asastuai/proof-of-context}},
-  note={Version 0.6}
+  note={Version 0.7; position paper with formal model (§9), soundness theorem, and reference implementation (§10)}
 }
 ```
 

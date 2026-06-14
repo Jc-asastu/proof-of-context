@@ -7,8 +7,8 @@ authors:
     orcid: ""
     affiliation: "Independent Researcher, Buenos Aires, Argentina"
     email: "juancmaisu@outlook.com"
-version: "0.6"
-date-released: "2026-04-22"
+version: "0.7"
+date-released: "2026-06-11"
 references:
   - type: article
     title: "Proof of Context applied to Verifiable Inference: A Receipt-Based Dispute Layer over TEE-Attested Commercial Inference"
@@ -47,4 +47,6 @@ abstract: >
   proof-of-learning robustness literature, and sketches constraints for a
   viable construction. The contribution is the naming, the unification, the
   cross-domain analogy, and the extension into attention-based inference —
-  not the discovery that staleness exists.
+  not the discovery that staleness exists. Version 0.7 adds a formal model, a
+  freshness-gated settlement soundness theorem for the enforced subset, and a
+  running reference implementation.
