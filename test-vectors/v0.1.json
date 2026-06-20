@@ -31,10 +31,49 @@
       "payload": {},
       "expected_canonical_json": "{}",
       "expected_sha256_hex": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+    },
+    {
+      "id": "v4-fi-input-manifest-single",
+      "description": "Proof-of-context f_i input-manifest root, single source. The manifest commits to the set of input-world sources an inference consumed; each descriptor is {endpoint, payload_hash, source_id}, and the manifest is {sources:[...], version:\"f_i/0.1\"}. CONTRACT: the sources array MUST be pre-sorted ascending by (endpoint, payload_hash) BEFORE canonicalization. canonical-JSON sorts object keys but NOT array elements, so this array ordering is an additional cross-language contract point beyond v1-v3.",
+      "payload": {
+        "sources": [
+          { "endpoint": "/api/v1/prices", "payload_hash": "5525810608ca0d5ec814d45159e4f11e09a533061f04f4193850b3ca2fc5c453", "source_id": "baseoracle:default" }
+        ],
+        "version": "f_i/0.1"
+      },
+      "expected_canonical_json": "{\"sources\":[{\"endpoint\":\"/api/v1/prices\",\"payload_hash\":\"5525810608ca0d5ec814d45159e4f11e09a533061f04f4193850b3ca2fc5c453\",\"source_id\":\"baseoracle:default\"}],\"version\":\"f_i/0.1\"}",
+      "expected_sha256_hex": "85d1f8c5608abf687562c1920ea6380e6eec6514a6f6cbc3c0ffe96ff9a914b9"
+    },
+    {
+      "id": "v5-fi-input-manifest-multi",
+      "description": "Proof-of-context f_i input-manifest root, two sources. Exercises the array pre-sort: sources are shown here in their REQUIRED post-pre-sort order (ascending by (endpoint, payload_hash); \"/api/v1/gas\" precedes \"/api/v1/prices\"). An implementation that builds the manifest from sources in any other order must pre-sort to this order before canonicalization to reproduce the hash.",
+      "payload": {
+        "sources": [
+          { "endpoint": "/api/v1/gas", "payload_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a", "source_id": "baseoracle:default" },
+          { "endpoint": "/api/v1/prices", "payload_hash": "5525810608ca0d5ec814d45159e4f11e09a533061f04f4193850b3ca2fc5c453", "source_id": "baseoracle:default" }
+        ],
+        "version": "f_i/0.1"
+      },
+      "expected_canonical_json": "{\"sources\":[{\"endpoint\":\"/api/v1/gas\",\"payload_hash\":\"44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a\",\"source_id\":\"baseoracle:default\"},{\"endpoint\":\"/api/v1/prices\",\"payload_hash\":\"5525810608ca0d5ec814d45159e4f11e09a533061f04f4193850b3ca2fc5c453\",\"source_id\":\"baseoracle:default\"}],\"version\":\"f_i/0.1\"}",
+      "expected_sha256_hex": "e8c348fdf1ee2eb66110b0c68394ebb92f08c9db26916e1c92a74b81d2fbd624"
+    },
+    {
+      "id": "v6-fm-model-lineage",
+      "description": "Proof-of-context f_m canonical model lineage. Each epoch is {weights_hash, epoch, activation_block}; the lineage is {epochs:[...], version:\"f_m/0.1\"}. CONTRACT: epochs MUST be pre-sorted ascending by epoch before canonicalization. The committee/quorum publishers sign the canonical JSON of this snapshot; model_epoch_distance is computed from lineage positions and activation blocks.",
+      "payload": {
+        "epochs": [
+          { "weights_hash": "1010101010101010101010101010101010101010101010101010101010101010", "epoch": 0, "activation_block": 100 },
+          { "weights_hash": "1111111111111111111111111111111111111111111111111111111111111111", "epoch": 1, "activation_block": 200 }
+        ],
+        "version": "f_m/0.1"
+      },
+      "expected_canonical_json": "{\"epochs\":[{\"activation_block\":100,\"epoch\":0,\"weights_hash\":\"1010101010101010101010101010101010101010101010101010101010101010\"},{\"activation_block\":200,\"epoch\":1,\"weights_hash\":\"1111111111111111111111111111111111111111111111111111111111111111\"}],\"version\":\"f_m/0.1\"}",
+      "expected_sha256_hex": "7d6104b7e52c9e210ea5daee1adc685a0bf24fcf1c7b18c3e16c9b47d7603585"
     }
   ],
   "notes": [
     "These vectors test the canonical JSON + SHA-256 stage of the wire format ONLY. Signature production is per-key and is tested in each implementation's own suite against a fixed test key.",
+    "ARRAY PRE-SORT CONTRACT (v4-v6): canonical-JSON sorts object KEYS but preserves ARRAY order. The f_i manifest `sources` must be pre-sorted ascending by (endpoint, payload_hash), and the f_m lineage `epochs` ascending by epoch, BEFORE canonicalization. The payloads above are shown already in that order; an implementation building from unsorted input must pre-sort to match the hash.",
     "Implementations that pass these three vectors are confirmed to share the canonical-hash construction. Implementations that fail any vector have drifted and the cross-implementation verification chain may be broken.",
     "When v0.2 of the spec lands, vectors are added; existing vectors are not removed. The vector file is append-only across spec revisions.",
     "Authoritative source: this file in the proof-of-context repository on the main branch."
