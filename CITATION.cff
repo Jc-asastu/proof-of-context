@@ -7,8 +7,8 @@ authors:
     orcid: ""
     affiliation: "Independent Researcher, Buenos Aires, Argentina"
     email: "juancmaisu@outlook.com"
-version: "0.8"
-date-released: "2026-06-20"
+version: "0.9"
+date-released: "2026-06-21"
 references:
   - type: article
     title: "Proof of Context applied to Verifiable Inference: A Receipt-Based Dispute Layer over TEE-Attested Commercial Inference"
@@ -47,9 +47,10 @@ abstract: >
   proof-of-learning robustness literature, and sketches constraints for a
   viable construction. The contribution is the naming, the unification, the
   cross-domain analogy, and the extension into attention-based inference —
-  not the discovery that staleness exists. Version 0.8 reports a reference
+  not the discovery that staleness exists. Version 0.9 reports a reference
   implementation that gates three of the four freshness types against real
   canonical-state oracles (a witness-presented input-freshness verifier and an
   M-of-N quorum model-lineage registry), with a multi-party on-chain
-  instantiation in an agent-to-agent dark pool, atop the formal model and
-  freshness-gated settlement soundness theorem introduced in v0.7.
+  instantiation in an agent-to-agent dark pool and a measured evaluation,
+  atop the formal model, freshness-gated settlement soundness theorem, and
+  multi-party corollary.

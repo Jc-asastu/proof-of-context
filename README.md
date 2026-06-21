@@ -25,14 +25,14 @@ Byte-level shape of a PoC attestation as it travels between protocol participant
 
 The family also includes two papers:
 
-### Proof of Context (v0.8): the framework paper
+### Proof of Context (v0.9): the framework paper
 
-The original position paper. Names the gap in decentralized-ML protocols where computations are verified for correctness but not for *contextual freshness*: was the right model used, on the right input, against the right state, and was the result settled before that context drifted? Introduces four freshness dimensions (computational, model, input, settlement), the execution-context-root construction, and the triple-anchor timestamp. Maps the structural analogue to DeFi's oracle-freshness problem (2020-2024). As of v0.8 it also contains a formal model, a freshness-gated settlement soundness theorem for the enforced subset (§9), and a reference-implementation section reporting the v0.3 crate (§10) — now gating model and input freshness against real canonical-state oracles (a witness-presented BaseOracle verifier for `f_i`, an M-of-N quorum model-lineage registry for `f_m`), with a multi-party on-chain instantiation in an agent-to-agent dark pool (§10.5).
+The original position paper. Names the gap in decentralized-ML protocols where computations are verified for correctness but not for *contextual freshness*: was the right model used, on the right input, against the right state, and was the result settled before that context drifted? Introduces four freshness dimensions (computational, model, input, settlement), the execution-context-root construction, and the triple-anchor timestamp. Maps the structural analogue to DeFi's oracle-freshness problem (2020-2024). As of v0.9 it also contains a formal model with a freshness-gated settlement soundness theorem and a multi-party corollary (§9), and a reference-implementation section reporting the v0.3 crate (§10) — gating model and input freshness against real canonical-state oracles (a witness-presented BaseOracle verifier for `f_i`, an M-of-N quorum model-lineage registry for `f_m`), a multi-party on-chain instantiation in an agent-to-agent dark pool (§10.5), and an evaluation with measured on-chain (120,799 CU/settle) and off-chain costs, test coverage, and cross-language convergence (§10.6).
 
 - **Paper (Markdown):** [paper/proof-of-context.md](paper/proof-of-context.md)
 - **Paper (PDF):** [paper/proof-of-context.pdf](paper/proof-of-context.pdf)
 - **Reference implementation (Phase 2):** [proof-of-context-impl](https://github.com/asastuai/proof-of-context-impl) — Rust crate with real cryptography (SHA-256 Merkle, Ed25519, MockCommitter, MockSettlementGate, end-to-end integration tests).
-- **Status:** v0.8 (20 June 2026); position paper plus formal model, soundness theorem (Theorem 1), and a reference-implementation section now gating three of four freshness types against real oracles, with an on-chain dark-pool instantiation. Public-share-ready.
+- **Status:** v0.9 (21 June 2026); position paper plus formal model (Theorem 1 + multi-party Corollary 1), and a reference-implementation section gating three of four freshness types against real oracles, with an on-chain dark-pool instantiation and a measured evaluation (§10.6). Public-share-ready.
 
 ### Proof of Context applied to Verifiable Inference (v0.1): first applied paper
 
@@ -50,7 +50,7 @@ A specialization of the v0.6 framework to commercial inference-as-a-service. Pro
 
 ## How to read this work
 
-If you want the full framework, please read **v0.8** first ([paper/proof-of-context.md](paper/proof-of-context.md)). It is a complete position paper; §9 adds the formal model and a soundness theorem, and §10 reports the reference implementation (now with real canonical-state oracles and an on-chain dark-pool instantiation in §10.5).
+If you want the full framework, please read **v0.9** first ([paper/proof-of-context.md](paper/proof-of-context.md)). It is a complete position paper; §9 adds the formal model, soundness theorem, and multi-party corollary, and §10 reports the reference implementation (real canonical-state oracles, an on-chain dark-pool instantiation in §10.5, and a measured evaluation in §10.6).
 
 If you are interested in commercial inference attestation specifically, please read the **v0.1 abstract** plus **§4-§6 of v0.1** ([paper-poc-inference-v0.1-pre1.md](paper-poc-inference-v0.1-pre1.md)). These three sections present the complete conceptual contribution. The surrounding sections (introduction, background, problem statement, implementation, empirical illustration, limitations, future work, conclusion) are scaffolded in the outline and will populate in subsequent revisions.
 
@@ -69,7 +69,7 @@ Both papers are citable. For v0.6:
   year={2026},
   month={6},
   howpublished={Position paper, \url{https://github.com/asastuai/proof-of-context}},
-  note={Version 0.8; position paper with formal model (§9), soundness theorem, and reference implementation (§10) with real canonical-state oracles and an on-chain dark-pool instantiation (§10.5)}
+  note={Version 0.9; position paper with formal model (§9: soundness theorem + multi-party corollary), and reference implementation (§10) with real canonical-state oracles, an on-chain dark-pool instantiation (§10.5), and a measured evaluation (§10.6)}
 }
 ```
 
