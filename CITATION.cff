@@ -7,8 +7,8 @@ authors:
     orcid: ""
     affiliation: "Independent Researcher, Buenos Aires, Argentina"
     email: "juancmaisu@outlook.com"
-version: "0.9"
-date-released: "2026-06-21"
+version: "0.9.1"
+date-released: "2026-07-05"
 references:
   - type: article
     title: "Proof of Context applied to Verifiable Inference: A Receipt-Based Dispute Layer over TEE-Attested Commercial Inference"
