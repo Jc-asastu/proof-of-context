@@ -1,8 +1,52 @@
 # Proof of Context applied to Agent Memory
 
-**Working draft, pre-1.** Heart sections complete, drafted first per the applied-paper construction protocol: §4 (Specialization), §5 (Read-Time Gate), §6 (Failure Model), §7 (Reference Instantiation and Measurement) drafted 2026-07-18. Surrounding sections (§1, §2, §3, §8, §9) follow the outline at `paper-poc-agent-memory-v0.1-outline.md`. The introduction and conclusion in that outline are written in author voice; the heart sections below are in standard academic register per the paper's hybrid mode. Related-work positioning is grounded in `RESEARCH-LANDSCAPE-memory.md` (two independent 8-agent scans, 2026-07-17).
+**Working draft, pre-1.** Heart sections (§4–§7) drafted first per the applied-paper construction protocol; frame sections (§2 Background, §3 Related Work, §8 Non-Claims, §9 Conclusion) drafted 2026-07-18. Remaining: §1 Introduction (author voice, written last). Surrounding sections (§1, §2, §3, §8, §9) follow the outline at `paper-poc-agent-memory-v0.1-outline.md`. The introduction and conclusion in that outline are written in author voice; the heart sections below are in standard academic register per the paper's hybrid mode. Related-work positioning is grounded in `RESEARCH-LANDSCAPE-memory.md` (two independent 8-agent scans, 2026-07-17).
 
 **Author:** Juan Cruz Maisú · Buenos Aires · `juancmaisu@outlook.com` · [github.com/Jc-asastu](https://github.com/Jc-asastu).
+
+---
+
+## §1. Introduction
+
+*(author voice — final drafting pass, per the construction protocol the introduction is written last)*
+
+---
+
+## §2. Background
+
+**The framework.** The Proof-of-Context position paper names a verification gap in decentralized ML protocols: existing primitives (proof-of-learning, zkML, TEE attestation, refereed delegation) answer *was the computation performed correctly*, and none answers *is it still valid to settle on*. The framework decomposes that second question into four freshness types — `f_c` computational, `f_m` model, `f_i` input, `f_s` settlement — enforced by a settlement gate `G` over signed commitments to an execution-context root, with renewal semantics (prospective-only root bumps, settlement windows) governing in-flight commitments when the canonical context moves. A reference implementation ships the objects and the gate; an on-chain instantiation (an agent-to-agent dark pool) demonstrates the gate composing into a live settlement path.
+
+**The method of the applied papers.** Two prior papers specialize the framework to a surface and report what the specialization reveals: v0.1-Inference found the four types partition asymmetrically (1-vs-3) under a centralized-provider threat model; v0.1-Agent-Economy found each type maps to a distinct infrastructure endpoint class and that four independent integrations converge on one wire format. Specialization-then-report is by now the program's method, and this paper is its third application. Each surface so far has yielded one structural result the framework did not predict but accommodates; on this surface it is the cost asymmetry of §4.2 and the renewable/write-final partition of §4.4.
+
+**The surface: agent memory in 2026.** Persistent memory has become a standard component of deployed agents, in four broad architectural families: vector and embedding stores (write-once entries under similarity recall); agentic memory frameworks in the MemGPT/Letta lineage, with managed products (Mem0, Zep) adding consolidation, decay-based ranking, and background curation; temporal knowledge graphs (Graphiti), which carry bi-temporal validity intervals per fact edge and close them on contradiction; and file-based instruction memory (CLAUDE.md-style), read whole into context. Orthogonally to architecture, a security literature has formed around the write path — poisoning, injection, provenance — surveyed in §3.
+
+**What none of these provide.** Across all four families, an entry's validity at the moment of use is either undefined (vector stores, file memory), a passive timestamp the reader is free to ignore (TTL fields, `valid_until` columns), a ranking signal (decay), or a write-time judgment (contradiction-triggered interval closure, curation rewrites). In no deployed system is validity an *attestable, renewable verdict evaluated on the read path*. The field's own surveys name the gap: staleness detection and evidence-aware verification of memory are flagged as open problems, and the empirical record (STALE benchmark: best-model detection of invalidated memories at 55.2%) establishes that model judgment alone does not close it. The measurement of §7.3 adds the missing quantitative half: in a production store, the majority of declared source references decay within a single quarter, silently.
+
+---
+
+## §3. Related work
+
+Positioning is grounded in a two-run adversarially-verified prior-art scan (method and full matrix in the companion document `RESEARCH-LANDSCAPE-memory.md`). The composite claim — renewable, source-bound, cryptographically attestable validity verdicts at read time — is unoccupied; every constituent axis has a near neighbor. This section draws the lines, nearest first.
+
+### 3.1 Nearest neighbors, verified against primary sources
+
+**Preference-memory integrity verification (defensive publication, 2026).** The closest conceptual match: preference entries carry cryptographic provenance signatures, confidence values *decay over time and are re-verified*, checkpoints are signed, and failure degrades gracefully to non-personalized output. The distinction: its renewal is triggered by *subsequent agent behavior* against an anomaly graph — it re-verifies confidence in a preference against how the user acts — where this construction re-verifies a validity verdict against *a recomputed hash of the entry's own declared source set*, on an oracle-derived schedule, with a three-state settlement result at every read rather than a binary personalize/don't gate. (Full-disclosure text was not retrievable at scan time; the assessment rests on the published abstract, and the residual uncertainty is carried openly in §8.)
+
+**Portable Agent Memory (2026).** The closest cryptographic machinery: BLAKE3 content-addressed Merkle-DAG over memory entries, Ed25519 root signature, verification at rehydration. The distinction is the object of proof: PAM proves a memory artifact was not corrupted *in transit* — one signature over the whole bundle, checked once at import, halt-on-first-failure — while this construction proves an entry's grounding has not drifted *over time*, per entry, at every read, with graded degradation. PAM's own future-work section lists "temporal validity windows" as unbuilt, naming this paper's territory and leaving it open.
+
+**MemLineage (2026).** The closest cryptographic antecedent on the write path: per-entry source hashes and Ed25519 signatures with transparency-log inclusion proofs, checked at retrieval. The check, however, is a deterministic *replay of the write-time signature* — the source hash is computed once and never re-evaluated against the live source, verification failure hard-drops the entry, and no renewal, grace, or expiry concept appears. MemLineage answers *was this legitimately written* (provenance, forgery); this paper answers *is this still true relative to a source that may have changed since* (currency, renewal). Same cryptographic vocabulary, orthogonal question.
+
+**ContextNest (2026).** Hash-chained version histories over context artifacts with point-in-time reconstruction: the audit answer to *what was current when it was consumed*, after the fact. The gate answers *what is current at the moment of the read*, before the agent acts. Ledger versus verdict.
+
+**MemGuard (2026).** The closest industry sidecar, and the system with genuine partial overlap on the verdict axis: it returns a structured trust verdict alongside the fact at query time, degrades rather than deletes, and re-checks sources on a schedule. Everything cryptographic is absent (verified against its source: the only primitive is SHA-256 chaining of the audit log — no signatures, no per-entry source root, no grace semantics), so its verdicts are unattributable scores rather than attestations: trustworthiness estimation, not validity settlement.
+
+### 3.2 Adjacent systems, one line each
+
+Bi-temporal knowledge graphs (Zep/Graphiti) close a fact's validity interval when a *contradicting memory* arrives — write-time, intra-store, uncryptographic; our trigger is drift between the entry and its *external* attested sources, at read time. Background-curation products (memory "dreaming") rewrite or delete stale facts in place — repairing the present by destroying the past; recommit semantics (§5.3) renew attestations over immutable facts. Write-time origin-binding and lineage enforcement (TMA-NM and kin) authenticate *who may write and whence*, the complementary layer under adversarial poisoning — this paper's adversary is entropy (§6), and the joint deployment is the obvious composition. Read-time attestation proxies (compliance tooling) sign *what was retrieved and by whom* — access attestation, not currency. Authorship-signing memory servers attest *who wrote* an entry; the verdict here attests whether what was written *still holds*. Ranking-decay features age everything by recency; verdict-aware ranking (§5.4) ages only what the world has evidenced moving past. Verifiable-credential status lists revoke issuer-driven identity claims; the object here is a memory fact and the verdict is drift-driven.
+
+### 3.3 Ancestry, claimed as such
+
+Three mechanisms are adopted as lineage rather than distinguished as competition, because their maturity in adjacent domains is evidence *for* the transplant: the **lease** (renewal-before-expiry as the price of trusting cached state, 1989); **OCSP stapling** (a short-lived signed validity attestation over an immutable underlying object, refreshed near read time — the fact/attestation separation, deployed at internet scale); and the **oracle heartbeat/deviation pair** (the renewal schedule, hardened in production DeFi, and the position paper's original analogical source). Each solves this paper's problem-shape in its own domain; none has been carried to agent memory; the surveys confirming that absence are cited in §2. The contribution claimed is the transplant and its consequences on the memory surface — the class-partitioned horizons, the renewable/write-final split, the read-as-settlement semantics — not the levers themselves.
 
 ---
 
@@ -189,6 +233,46 @@ The circularity is the finding: **a store built without the primitive cannot eve
 The wiring of the full gate onto the store follows §5 directly: a thin layer that (i) extends the write path with a declared source set and an attestation over its canonical root, (ii) runs a heartbeat over the hot core — under the measured age distribution, a "touched within the median age" policy covers half the store — and (iii) intercepts reads to evaluate and attach the verdict, with verify-on-read repair for the tail. Per-class horizon presets would be seeded from the measured per-class rates and refined as the attestation history accumulates.
 
 What this section deliberately does not claim: the layer is designed, not deployed; the fraction-of-reads-served-`StillValid` metric — the gate's true operating characteristic — requires read-path instrumentation that does not yet exist; and the per-class drift rates above are one store, one quarter, one operator. These are engineering measurements establishing that the failure the paper names is the majority condition of a real store and that the proposed machinery is affordable against it — not a comparative evaluation. The measurement script and the raw summary are published as companion artifacts (`measurements/measure-drift.mjs`, `measurements/agent-memory-drift-2026-07-18.json`).
+
+---
+
+## §8. What this paper does not claim
+
+Stated as a section rather than scattered as hedges, per the program's discipline.
+
+**Not a new cryptographic primitive.** The objects, the verdict engine, and the gate are the position paper's, reused unchanged (§7.1 reports the reuse as a result). The claim is the specialization: the mapping of §4, the read-time semantics of §5, the failure model of §6, and the measurement of §7.
+
+**Not a novelty claim over staleness detection.** TTLs, cache invalidation, decay ranking, bi-temporal knowledge graphs, and freshness-aware retrieval all detect or bound staleness in their own senses; §3 draws the lines. The claim is narrower and specific: validity as a *renewable, source-bound, signed verdict on the read path* — and the composition of those properties, which §3's scan found unoccupied.
+
+**Not a truth oracle.** Freshness is not truth (§6.2). An entry wrong at write time is fresh and false forever, and the gate will say so on no axis. The gate composes with correctness disciplines; it does not supply one.
+
+**Not a memory architecture.** Nothing here stores, embeds, retrieves, or ranks. The construction is a validity layer over whatever architecture exists, composing with retrieval rather than replacing it (§5.4).
+
+**Not a defense against a hostile writer.** Write-path poisoning is the subject of the origin-binding literature, the complementary layer (§6.2). The adversary modeled here is entropy.
+
+**Not a calibrated deployment.** One store, one quarter, one operator, coarse instruments — §7.3's caveats are load-bearing and its headline figure is a lower-bound demonstration, not a rate. The read-path operating characteristic is unmeasured because the instrumentation does not yet exist (§7.4).
+
+**One open verification debt, carried honestly.** The closest prior-art neighbor was assessed from its published abstract because the full disclosure text was not retrievable at scan time (§3.1). The assessment is stable under everything the abstract states; a mechanism buried in the unretrieved body could narrow the distinction, and the citation will be re-verified against the full text before any submission of record.
+
+---
+
+## §9. Conclusion: the arc
+
+*(author voice)*
+
+The program now instantiates on three surfaces.
+
+The theory. The market. The mind.
+
+Same skeleton every time: a fact, a renewable attestation, a verdict at the moment of use. In the dark pool the witness attests price. In the compute papers it attests the context of execution. Here it attests knowledge.
+
+Memory turned out to be the purest case. There is no computation underneath to verify. Strip the freshness question away and nothing is left — memory validity *is* contextual validity. The framework did not have to be bent to fit this surface; the surface is what the framework was always describing.
+
+And this time the gap measured itself. The store that holds this program's own history — the sessions that produced the position paper, the dark pool, this paper — turned out to be 55% decayed at the reference level within a hundred days. Silently. It told nobody, because it had no way to say it. That is the entire argument in one number: the substrate must carry the verdict, because the world moves and the store, as built today, does not notice.
+
+A memory that never expires is not alive. A memory whose validity is renewed, and whose reads say so, is.
+
+The fact persists. The attestation renews.
 
 ---
 
