@@ -1,6 +1,6 @@
 # Proof of Context applied to Agent Memory
 
-**Working draft, pre-1.** Heart sections are drafted first, per the applied-paper construction protocol: §4 (Specialization) drafted 2026-07-18; §5 (Read-Time Gate), §6 (Failure Model), §7 (Reference Instantiation) follow. Surrounding sections (§1, §2, §3, §8, §9) follow the outline at `paper-poc-agent-memory-v0.1-outline.md`. The introduction and conclusion in that outline are written in author voice; the heart sections below are in standard academic register per the paper's hybrid mode. Related-work positioning is grounded in `RESEARCH-LANDSCAPE-memory.md` (two independent 8-agent scans, 2026-07-17).
+**Working draft, pre-1.** Heart sections are drafted first, per the applied-paper construction protocol: §4 (Specialization), §5 (Read-Time Gate), §6 (Failure Model) drafted 2026-07-18; §7 (Reference Instantiation) follows. Surrounding sections (§1, §2, §3, §8, §9) follow the outline at `paper-poc-agent-memory-v0.1-outline.md`. The introduction and conclusion in that outline are written in author voice; the heart sections below are in standard academic register per the paper's hybrid mode. Related-work positioning is grounded in `RESEARCH-LANDSCAPE-memory.md` (two independent 8-agent scans, 2026-07-17).
 
 **Author:** Juan Cruz Maisú · Buenos Aires · `juancmaisu@outlook.com` · [github.com/Jc-asastu](https://github.com/Jc-asastu).
 
@@ -74,11 +74,75 @@ We conclude the four-type decomposition is well-shaped for agent memory with no 
 
 ## §5. The read-time gate
 
-*(next drafting pass)*
+The settlement gate of the position paper is a refusal machine: a commitment that fails a predicate is not paid. That semantics cannot transfer to memory unmodified. A memory store that refuses recall is not a safer memory store; it is a lobotomized one, and its operator will route around it. The gate on this surface must never make the fact unavailable. What it withholds is not the fact but the fact's *standing*.
+
+### 5.1 The verdict
+
+A read takes an entry and the present moment and returns a pair: the fact, and a verdict over the entry's most recent attestation. The verdict is a function of four inputs — the attestation, the current canonical state of the source space (recomputed root and/or lineage position, per the type being decided), the read clock, and the threshold preset selected by the entry's class (§4.4). It takes one of three values, inherited unchanged from the reference implementation's renewal policy:
+
+- **`StillValid`.** The attested root matches the current canonical root and the verification window is open. The fact is served load-bearing: the agent may act on it without qualification.
+- **`ProtectedByProspectiveOnly`** — on this surface, *drifted-in-grace*. The source space has moved since attestation, but the verification window is still open. The fact is served with the flag: the agent may act, and knows the ground has shifted. The grace window inherits its purpose from prospective-only semantics on the compute surface: there, it protects in-flight workers from retroactive invalidation; here, it protects the read path from thrash — a store whose every upstream edit instantly demotes every dependent entry serves flags on every read and trains its consumer to ignore them. Drift within the window is information, not an alarm.
+- **`ExpiredRequireRecommit`.** The source space has moved and the window has closed, or the verification itself has outlived `max_f_s`. The fact is still served — nothing is withheld — but as *unverified*: the verdict states that no current attestation supports it, and re-verification is required before it may bear load again.
+
+The three-state space is a deliberate departure from the two nearest prior systems, both of which hard-fail: the portable-memory protocol halts rehydration on first verification failure, and the lineage-enforcement system drops entries whose write-time signature fails to replay. Both semantics are correct for their objects (transport integrity, provenance) and wrong for currency: a stale memory is not a corrupt memory, and treating the two identically either destroys usable knowledge or forces the operator to disable the check.
+
+### 5.2 Renewal schedules
+
+Section 4.2 established the surface's cost asymmetry: `f_s` is decided free at every read, `f_i` requires touching the world. The renewal machinery is the policy for spending the costly check. It is imported from oracle design, where the identical asymmetry (every consumer read is cheap; every feed update is costly) produced a settled two-lever structure over years of production hardening:
+
+**Heartbeat.** A background process re-verifies a designated subset of the store — the *hot core* — on a cadence chosen so that no hot entry's verification age approaches `max_f_s`. Membership in the hot core is a policy over class, access recency, and load-bearing frequency: the entries the agent is currently acting on, kept continuously warm. This is the component that makes the memory *live* rather than merely auditable — the store's validity layer is maintained ahead of the reads that depend on it, and a hot read almost always lands `StillValid`.
+
+**Verify-on-read.** The long tail is not heartbeated. A tail read that lands `ExpiredRequireRecommit` triggers re-verification at that moment, lazily; the cost of the tail is paid only when the tail is touched, and an entry never read again never costs another verification. The first read after a long dormancy is served unverified and repaired; the second read is served verified.
+
+**Deviation threshold.** The third lever bounds what counts as drift at all (§4.3): recomputed differences that survive per-source-type normalization are drift; differences that normalize away are not. This is the lever that keeps the other two honest — without it, heartbeats burn verification budget re-attesting entries whose sources changed only cosmetically, and verify-on-read demotes entries over whitespace.
+
+The lineage of this structure is worth stating plainly, because it strengthens rather than weakens the claim. Renewal-before-expiry is the lease, thirty-five years old. A short-lived signed validity attestation over an immutable underlying object, refreshed near read time, is certificate stapling. A feed that updates on deviation-or-heartbeat, whichever first, is the production oracle pattern. Each of these is proven at scale in its own domain; none has been transplanted to agent memory, and the surveys of that field name the gap explicitly. The paper's §5 contribution is the transplant, not the levers.
+
+### 5.3 Recommit semantics
+
+Re-verification of an expired or drifted entry has three possible outcomes, and the append-only discipline of §4.1 governs all of them:
+
+1. **Sources unchanged** (expiry was pure `f_s`): a renewed attestation is issued over the same fact and the same root. The fact's standing returns to load-bearing; nothing else changes.
+2. **Sources drifted, fact revisable**: the re-verifier derives the fact's successor from the current sources and writes it as a *new* entry, attested against the recomputed root, carrying a derivation link to its predecessor. The predecessor is not deleted; it is closed — its final attestation marks it superseded, and it remains readable as history ("what the store believed, and until when, and why it stopped").
+3. **Sources drifted, fact not re-derivable** (referents vanished, domain superseded — the `f_m` outcome): the entry is closed without a successor. It remains readable as history; no current attestation supports it, and none ever will.
+
+Outcome 2 is where the fact/attestation separation earns its keep, and where this design departs most sharply from the strongest industry alternative. Background-curation systems that detect staleness respond by *rewriting the memory in place* — mutating or deleting the stale fact. That repairs the store's present at the cost of its past: the system can no longer answer what it believed at a given time, cannot audit how a belief evolved, and a faulty curator destroys knowledge irreversibly. Under recommit semantics the fact is immutable, revision is append, and every attestation ever issued survives in the entry's attestation history. The store's present is a view (latest attestation per chain); the store's past is the chain itself.
+
+### 5.4 The gate composes with retrieval; it does not replace it
+
+The gate is a validity layer, not a memory architecture (§8 restates this as a non-claim). Retrieval — embedding, ranking, search — decides which entries are *relevant*; the gate decides, of the retrieved entries, which are *current*. The two compose in either order, with one integration worth naming: a retrieval layer may use the verdict as a ranking signal (demote expired entries rather than merely flagging them), which recovers the behavior of recency-decay ranking systems as a degenerate case — decay ranking is verdict-blind demotion by age; verdict-aware ranking is demotion by *evidenced* staleness. The former ages everything; the latter ages only what the world has actually moved past.
+
+---
 
 ## §6. Failure model
 
-*(next drafting pass)*
+The settlement papers model an economic adversary: a counterparty who profits from settling stale work. This surface has, in its common deployment, no counterparty. The store, the re-verifier, and the reader are typically one principal, and nobody profits when the agent acts on a dead config path. The adversary here is entropy: drift is not an attack on the system but the default behavior of the world, and the model must be honest about that difference — importing the settlement papers' adversarial machinery wholesale would be theater (§4.4 already discharged the triple-anchor on these grounds). What survives the change of adversary is the *structure* of failure, which maps onto the four types exactly.
+
+### 6.1 Failure taxonomy
+
+**F1. Silent decay** (`f_i`, `f_m`) — the baseline failure, and the one every snapshot store in deployment commits today. An agent acts on a memory whose sources have moved: the deploy region that migrated, the API that was deprecated, the file that was refactored. Structurally this is the stale-oracle exploit of the position paper §5 — a true value from the wrong moment — with the attacker deleted and the loss self-inflicted. It is the failure the entire construction exists to make *visible*: the gate does not prevent the world from moving; it prevents the store from concealing that it has.
+
+**F2. Late write** (`f_c`). The entry records a reconstruction rather than an observation. This failure is complete at write time and no renewal repairs it — re-verifying a confabulated memory against its declared sources re-attests the confabulation. The defense is structural (save-at-occurrence, §4.2) plus the honesty field: a reader can see the observation-to-write gap and weigh the entry accordingly.
+
+**F3. Confident stale recall** (`f_s`). A verification exists, is old, and is treated as current. This is the failure mode of *checked* systems, as F1 is the failure mode of unchecked ones: the presence of a past verification launders staleness into apparent validity ("it was checked" decays into "it is correct"). The verdict's entire purpose is to make verification age a first-class output of every read rather than a buried timestamp.
+
+**F4. Poisoned renewal.** The failure mode the renewal machinery itself introduces, and therefore the one this section must own rather than deflect: a faulty or compromised re-verifier issues a fresh attestation over a false fact, or against an under-scoped root. Renewal amplifies trust; a bad renewal is worse than no renewal, because it resets the very signal (`f_s`) that would have prompted scrutiny. The mitigations are the properties §4.4 retained when it discharged the rest of the adversarial machinery: attestations are signed and attributable, so every renewal names its verifier; attestation history is append-only, so a laundering event is permanently in the record and a bad verifier's entire output is enumerable after discovery. Attributability does not prevent the poisoned renewal — it makes it auditable and revocable-in-bulk, which is the same settlement the certificate-revocation lineage reached for the same problem.
+
+**F5. Root under-scoping** (§4.3). Sources omitted from the declaration never trigger demotion; the entry presents as verified on a surface narrower than its true dependency set. This is the self-inflicted variant of the position paper's §8 evasion vector, and it is bounded the same way: the committed surface must cover the sensitive surface, and re-verification audits the declaration itself, widening the set when it finds undeclared dependencies.
+
+### 6.2 What the gate does not protect against
+
+Stated plainly, per the program's discipline:
+
+**Freshness is not truth.** An entry wrong at the moment of writing is fresh and false, and every verdict it ever receives will be `StillValid` so long as its (correctly hashed, faithfully unchanged) sources stand. The gate attests that a fact's declared grounding has not moved — not that the fact was ever a sound reading of that grounding. This is the same boundary the position paper draws between the settlement gate and the underlying compute proof: `G` composes with a correctness primitive, it does not supply one.
+
+**The verdict binds the read, not the reader.** The gate hands the agent a flagged or unverified fact; nothing forces the agent to weigh the flag. A model that confabulates over a demoted memory fails downstream of the gate. The claim is that the substrate carries the verdict — the empirical record (§4.2's 55.2%) shows the model cannot be relied on to *generate* the verdict, and no claim is made that it can be forced to *heed* it.
+
+**Adversarial poisoning at write time is out of scope.** A hostile writer injecting false memories through legitimate channels is the subject of the origin-binding and lineage-enforcement literature surveyed in §3, which addresses *who may write* and *whence*. This construction addresses *whether what was written still holds*. The two are complementary layers over the same store, and the composition — origin-bound writes under renewable read-time validity — is the obvious joint deployment; this paper claims only the second layer.
+
+### 6.3 An incident from this paper's own construction
+
+The failure model is not hypothetical, and the construction of this paper supplied its own exhibit. During the prior-art scan (§3; method in the companion landscape document), an automated survey agent reported that a governance-layer system shipped three-state read verdicts and Ed25519 signatures — a finding that, had it held, would have occupied the core of this paper's claim. The report was confident, specific, and false: adversarial re-verification against the primary source found no such mechanisms, and a second independent scan confirmed their absence. The erroneous finding was an unverified memory of a source, drifting from the source, presented with full confidence — F1 and F3 in a single artifact, caught precisely by the discipline this paper proposes making mechanical: re-verification against the declared source before the memory was permitted to bear load. The Related Work section of this paper exists in its current form because a renewal gate, applied manually, caught a stale attestation before settlement.
 
 ## §7. Reference instantiation
 
