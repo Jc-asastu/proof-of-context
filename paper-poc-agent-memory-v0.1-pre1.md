@@ -1,6 +1,6 @@
 # Proof of Context applied to Agent Memory
 
-**Working draft, pre-1.** Heart sections are drafted first, per the applied-paper construction protocol: §4 (Specialization), §5 (Read-Time Gate), §6 (Failure Model) drafted 2026-07-18; §7 (Reference Instantiation) follows. Surrounding sections (§1, §2, §3, §8, §9) follow the outline at `paper-poc-agent-memory-v0.1-outline.md`. The introduction and conclusion in that outline are written in author voice; the heart sections below are in standard academic register per the paper's hybrid mode. Related-work positioning is grounded in `RESEARCH-LANDSCAPE-memory.md` (two independent 8-agent scans, 2026-07-17).
+**Working draft, pre-1.** Heart sections complete, drafted first per the applied-paper construction protocol: §4 (Specialization), §5 (Read-Time Gate), §6 (Failure Model), §7 (Reference Instantiation and Measurement) drafted 2026-07-18. Surrounding sections (§1, §2, §3, §8, §9) follow the outline at `paper-poc-agent-memory-v0.1-outline.md`. The introduction and conclusion in that outline are written in author voice; the heart sections below are in standard academic register per the paper's hybrid mode. Related-work positioning is grounded in `RESEARCH-LANDSCAPE-memory.md` (two independent 8-agent scans, 2026-07-17).
 
 **Author:** Juan Cruz Maisú · Buenos Aires · `juancmaisu@outlook.com` · [github.com/Jc-asastu](https://github.com/Jc-asastu).
 
@@ -144,9 +144,51 @@ Stated plainly, per the program's discipline:
 
 The failure model is not hypothetical, and the construction of this paper supplied its own exhibit. During the prior-art scan (§3; method in the companion landscape document), an automated survey agent reported that a governance-layer system shipped three-state read verdicts and Ed25519 signatures — a finding that, had it held, would have occupied the core of this paper's claim. The report was confident, specific, and false: adversarial re-verification against the primary source found no such mechanisms, and a second independent scan confirmed their absence. The erroneous finding was an unverified memory of a source, drifting from the source, presented with full confidence — F1 and F3 in a single artifact, caught precisely by the discipline this paper proposes making mechanical: re-verification against the declared source before the memory was permitted to bear load. The Related Work section of this paper exists in its current form because a renewal gate, applied manually, caught a stale attestation before settlement.
 
-## §7. Reference instantiation
+## §7. Reference instantiation and measurement
 
-*(next drafting pass)*
+Following the program's discipline, this section reports what is implemented and measured, and states plainly what is designed but not yet wired. Three results are reported: the mapping onto the reference crate (implemented, tested), a drift measurement over a production observation store (measured, with method caveats), and the deployment design over that store (specified; instrumentation pending).
+
+### 7.1 The mapping requires zero new primitives
+
+The verdict engine of §5 is the reference crate's renewal policy, reused unchanged. The mapping, implemented as a worked example in the reference implementation repository (`examples/memory_freshness.rs`):
+
+| Memory concept (§4–§5) | Crate object |
+|---|---|
+| source-set root | `context_root` of the commitment |
+| fact hash | `output_hash` |
+| verification event | commit anchor |
+| source drift | canonical-root bump |
+| read | settlement / renewal evaluation |
+| re-verification | recommit |
+| verdict | `RenewalOutcome` (`StillValid` / `ProtectedByProspectiveOnly` / `ExpiredRequireRecommit`) |
+
+The example constructs a memory entry over a two-source set, attests it with a real Ed25519 signature, and exercises the full verdict cycle: unchanged sources yield `StillValid`; an edited source within the window yields the grace verdict; past the window, `ExpiredRequireRecommit`; recommitting against the current sources (a §5.3 outcome-2 revision) returns the renewed entry to `StillValid`. That the commitment type accepted a non-ML domain without modification — the source-set root simply occupies the context-root position — is itself evidence for the position paper's venue-neutrality claim. Costs carry over from the position paper's §10.4 unchanged, since the objects are the same: ~0.2 µs per root hash, ~11.5 µs per commitment, ~25 µs per verification. At those figures a full re-attestation sweep of the store measured below prices in well under a millisecond of cryptographic work; renewal cost on this surface is dominated entirely by *fetching the sources*, never by the attestation itself — consistent with §4.2's placement of the entire cost burden on `f_i`.
+
+### 7.2 The testbed store
+
+The measurement target is a production Engram observation store: the persistent memory of the working sessions that produced this research program, including this paper. At measurement time (2026-07-18) it held **751 observations** spanning **100 days** (median age 39 days, P90 93 days), typed by the store's own taxonomy (discovery, decision, architecture, session summary, bugfix, config, preference, among others). The self-referential choice is deliberate, per the outline's dogfooding argument, and it has a methodological consequence worth stating: the store was written under no anticipation of this measurement — its authors (human and model) recorded file paths as informal prose convention, not as a declared source set — so the store is an unbiased specimen of exactly the baseline architecture §4.1 describes: facts persisted, sources named informally, nothing committed, nothing renewed.
+
+### 7.3 Drift measurement: the majority of source references decayed within 100 days
+
+**Method.** Every observation's content was scanned for declared absolute file paths (the store's prose convention for naming affected artifacts). Each declared path was resolved against the live filesystem: a missing path is scored as a *vanished* referent (the `f_m`-style limiting case of §4.2); an existing path whose modification time postdates the observation is scored as *drifted* (an `f_i`-style event); an existing path unmodified since the observation is *stable*. 68 observations declared 107 distinct paths.
+
+**Result.** Of the 107 declared paths, **26 (24%) had vanished and 33 (31%) had drifted — 55% of all declared source references were stale** at measurement time, in a store whose oldest entry is one hundred days old. At the observation level, 42 of the 68 path-bearing observations (62%) carried at least one vanished or drifted reference. Per-class rates order as §4.4's taxonomy predicts — state-describing classes decay fastest: architecture 78% stale (n=9 path-bearing), session summaries 71% (n=14), decisions 70% (n=10), against discovery notes at 47% (n=17). The class-level sample sizes are small and the ordering is reported as consistent-with rather than confirmatory; the aggregate 55%/62% figures are the load-bearing numbers.
+
+**What the measurement's own limits demonstrate.** The method's caveats are not incidental — each one is the absence of a primitive this paper proposes, encountered as a measurement obstacle:
+
+- *Modification time is a proxy, and both leaky and coarse.* A path's mtime can move on a cosmetically-normalized edit (over-counting) and content can be reverted after a touch (over-counting again), while a moved-and-renamed file scores as vanished rather than drifted. The honest instrument would be **rehashing against a committed source-set root** — which does not exist, because the store never committed one. The measurement is coarse precisely because the primitive is missing.
+- *No deviation threshold exists to apply.* Some fraction of the 31% "drifted" is normalization-invisible churn; without per-source normalizers (§4.3) there is no principled way to subtract it. The gate's third lever is missing from the measurement for the same reason it is missing from the store.
+- *Path extraction is inference, not declaration.* The scan reconstructs an approximate source set from prose — exactly the under-scoping failure F5 warns about, here committed by the measurement itself out of necessity. Declared source sets would make the measurement exact and the scan unnecessary.
+
+The circularity is the finding: **a store built without the primitive cannot even be audited for staleness except approximately.** The 55% figure is best read not as a precise drift rate but as a lower-bound demonstration that silent decay (F1) is the majority condition of a production agent-memory store within a single quarter — and that measuring it precisely requires the very commitment structure whose absence caused it.
+
+**Cost of the sweep.** The full measurement — 751 observations scanned, 107 paths resolved — completes in seconds on commodity hardware, dominated by filesystem stat calls. A heartbeat re-verifying the store's entire path-bearing subset is therefore affordable at any plausible cadence, empirically confirming the §5.2 cost model on this store's scale.
+
+### 7.4 Deployment design and what is not yet claimed
+
+The wiring of the full gate onto the store follows §5 directly: a thin layer that (i) extends the write path with a declared source set and an attestation over its canonical root, (ii) runs a heartbeat over the hot core — under the measured age distribution, a "touched within the median age" policy covers half the store — and (iii) intercepts reads to evaluate and attach the verdict, with verify-on-read repair for the tail. Per-class horizon presets would be seeded from the measured per-class rates and refined as the attestation history accumulates.
+
+What this section deliberately does not claim: the layer is designed, not deployed; the fraction-of-reads-served-`StillValid` metric — the gate's true operating characteristic — requires read-path instrumentation that does not yet exist; and the per-class drift rates above are one store, one quarter, one operator. These are engineering measurements establishing that the failure the paper names is the majority condition of a real store and that the proposed machinery is affordable against it — not a comparative evaluation. The measurement script and the raw summary are published as companion artifacts (`measurements/measure-drift.mjs`, `measurements/agent-memory-drift-2026-07-18.json`).
 
 ---
 
