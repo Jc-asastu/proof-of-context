@@ -1,6 +1,6 @@
 # Proof of Context applied to Agent Memory
 
-**Working draft, pre-1.** Heart sections (§4–§7) drafted first per the applied-paper construction protocol; frame sections (§2 Background, §3 Related Work, §8 Non-Claims, §9 Conclusion) drafted 2026-07-18. Remaining: §1 Introduction (author voice, written last). Surrounding sections (§1, §2, §3, §8, §9) follow the outline at `paper-poc-agent-memory-v0.1-outline.md`. The introduction and conclusion in that outline are written in author voice; the heart sections below are in standard academic register per the paper's hybrid mode. Related-work positioning is grounded in `RESEARCH-LANDSCAPE-memory.md` (two independent 8-agent scans, 2026-07-17).
+**Working draft, pre-1 — complete.** Heart sections (§4–§7) drafted first per the applied-paper construction protocol; frame sections (§2, §3, §8, §9) and the introduction (§1, author voice, written last) complete the draft as of 2026-07-18. Hybrid register: §1 and §9 speak in author voice; §2–§8 in standard academic register. Positioning grounded in `RESEARCH-LANDSCAPE-memory.md`; measurement artifacts in `measurements/`. Surrounding sections (§1, §2, §3, §8, §9) follow the outline at `paper-poc-agent-memory-v0.1-outline.md`. The introduction and conclusion in that outline are written in author voice; the heart sections below are in standard academic register per the paper's hybrid mode. Related-work positioning is grounded in `RESEARCH-LANDSCAPE-memory.md` (two independent 8-agent scans, 2026-07-17).
 
 **Author:** Juan Cruz Maisú · Buenos Aires · `juancmaisu@outlook.com` · [github.com/Jc-asastu](https://github.com/Jc-asastu).
 
@@ -8,7 +8,35 @@
 
 ## §1. Introduction
 
-*(author voice — final drafting pass, per the construction protocol the introduction is written last)*
+*(authorial register: the introduction speaks in my voice. The heart sections that follow speak in standard academic register.)*
+
+Why is memory anything at all?
+
+Because it is alive while it happens. A memory is context that survived its moment. The moment passes. The context persists.
+
+That persistence is the entire value of memory. And the entire danger of it.
+
+Every agent memory system built today is a snapshot store. Vector stores. Observation databases. Session summaries. Knowledge files. Different architectures, one shared contract: write once, trust forever. Nothing on the read path asks whether the world the memory describes still exists.
+
+The position paper named this gap for computation. *A computation can be correct and still not be worth settling on.* The dark pool named it for markets. A quote against stale context is economically toxic.
+
+Memory is the third surface. And it is the purest one.
+
+A memory is nothing *but* context. There is no computation underneath to verify. Strip the freshness question away from a memory and there is no residual correctness question left. Memory validity *is* contextual validity. The framework does not have to be bent to fit this surface. This surface is what the framework was always describing.
+
+i argue the resolution is the one DeFi found and the settlement papers formalized.
+
+The fact persists. The attestation renews.
+
+A living memory is not one that never expires. Nothing that never expires is alive. A living memory is one whose validity is a renewable attestation, evaluated at the moment of use, and whose reads carry the verdict.
+
+i also measured the gap. Not on a benchmark. On the store that holds this research program's own history — the sessions that produced the position paper, the dark pool, and this paper. Within one hundred days, 55% of its declared source references had silently decayed. The store told nobody. It had no way to say it. That number is §7; the machinery that would have said it is §5; what it costs is microseconds.
+
+That is the paper.
+
+The heart sections (§4 through §7) speak in standard academic register. They map the four freshness types onto the memory lifecycle. They specify the read-time gate. They model the failures — including the one the machinery itself introduces. They report the instantiation and the measurement.
+
+This introduction speaks in mine.
 
 ---
 

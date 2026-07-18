@@ -23,7 +23,7 @@ Byte-level shape of a PoC attestation as it travels between protocol participant
 
 ---
 
-The family also includes two papers:
+The family also includes three papers:
 
 ### Proof of Context (v0.9.1): the framework paper
 
@@ -45,6 +45,18 @@ A specialization of the v0.6 framework to commercial inference-as-a-service. Pro
 - **Empirical companion (in private development):** cross-provider Qwen3 14B inference benchmark. Local consumer-tier baseline complete (RTX 5070, 9 cells, methodology documented). Cloud sweep and full publication pending. Findings will be reported inline in §8 of the paper when the study is complete.
 - **Companion crate (forthcoming):** Phase 3 of [proof-of-context-impl](https://github.com/asastuai/proof-of-context-impl) will implement the InferenceReceipt module.
 - **Status:** v0.1 working draft published 2026-04-27; remaining sections in active writing.
+
+### Proof of Context applied to Agent Memory (v0.1): third applied paper
+
+A specialization of the framework to agent memory, argued as the purest surface: a memory entry is persisted context with no computation underneath, so memory validity *is* contextual validity. The central construction separates the immutable fact from a renewable attestation over its declared source set, and moves the verdict to the read path: reads return the fact plus a three-state settlement result (still-valid / drifted-in-grace / expired-reverify), never a hard failure, under renewal schedules imported from oracle design (heartbeat over the hot core, verify-on-read over the tail, deviation thresholds). The empirical section measures a production observation store — the store holding this research program's own history — and finds 55% of declared source references silently decayed within one hundred days, with the measurement's own coarseness demonstrating the missing primitive.
+
+- **Abstract:** [paper-poc-agent-memory-v0.1-abstract.md](paper-poc-agent-memory-v0.1-abstract.md)
+- **Paper draft (working):** [paper-poc-agent-memory-v0.1-pre1.md](paper-poc-agent-memory-v0.1-pre1.md) — all sections drafted (§1–§9); consistency and citation passes pending.
+- **Outline:** [paper-poc-agent-memory-v0.1-outline.md](paper-poc-agent-memory-v0.1-outline.md)
+- **Prior-art landscape:** [RESEARCH-LANDSCAPE-memory.md](RESEARCH-LANDSCAPE-memory.md) — two independent adversarially-verified scans; composite claim unoccupied, seven distinction lines drawn.
+- **Measurement artifacts:** [measurements/](measurements/) — drift-measurement script and raw summary (2026-07-18).
+- **Reference mapping:** `examples/memory_freshness.rs` in [proof-of-context-impl](https://github.com/Jc-asastu/proof-of-context-impl) — the verdict cycle over a real Ed25519-signed commitment, zero new primitives.
+- **Status:** v0.1 pre-1 complete 2026-07-18; pre-submission verification debts listed in §8 of the draft.
 
 ---
 
