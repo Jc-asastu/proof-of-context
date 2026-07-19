@@ -222,7 +222,7 @@ If a fourth round of Classic review surfaces only polish (naming, sentence rephr
 ## 9 · What success looks like
 
 Success at day 25:
-- `paper-poc-inference-v0.1.md` shipped on `github.com/asastuai/proof-of-context`, ~7000-8000 words
+- `paper-poc-inference-v0.1.md` shipped on `github.com/Jc-asastu/proof-of-context`, ~7000-8000 words
 - `proof-of-context-impl` crate at version 0.3.0 on crates.io with the inference module
 - Empirical section grounded in real cloud benchmark data with all sources cited
 - Reference audit clean (no hallucinated citations)

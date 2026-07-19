@@ -3,7 +3,7 @@
 ### A research program on attestation primitives for decentralized machine learning
 
 **Author:** Juan Cruz Maisu · Buenos Aires, Argentina
-[juancmaisu@outlook.com](mailto:juancmaisu@outlook.com) · [github.com/asastuai](https://github.com/asastuai)
+[juancmaisu@outlook.com](mailto:juancmaisu@outlook.com) · [github.com/Jc-asastu](https://github.com/Jc-asastu)
 
 ---
 
@@ -18,7 +18,7 @@ The family currently includes two papers and one wire-format specification:
 Byte-level shape of a PoC attestation as it travels between protocol participants. Emerged from running the same primitive through four independent consumer surfaces and observing convergence. Promotes the convergence to a stable contract so independent integrators can interop without coordinating individually.
 
 - **Specification:** [SPEC-WIRE-FORMAT-v0.1.md](SPEC-WIRE-FORMAT-v0.1.md)
-- **Reference implementations:** Rust ([proof-of-context-impl](https://github.com/asastuai/proof-of-context-impl)), JavaScript (BaseOracle, TrustLayer), TypeScript (Vigil, PayClaw).
+- **Reference implementations:** Rust ([proof-of-context-impl](https://github.com/Jc-asastu/proof-of-context-impl)), JavaScript (BaseOracle, TrustLayer), TypeScript (Vigil, PayClaw).
 - **Status:** v0.1 published 2026-04-30. All five reference implementations produce byte-identical canonical hashes and verify each other's signatures.
 
 ---
@@ -31,7 +31,7 @@ The original position paper. Names the gap in decentralized-ML protocols where c
 
 - **Paper (Markdown):** [paper/proof-of-context.md](paper/proof-of-context.md)
 - **Paper (PDF):** [paper/proof-of-context.pdf](paper/proof-of-context.pdf)
-- **Reference implementation (Phase 2):** [proof-of-context-impl](https://github.com/asastuai/proof-of-context-impl) — Rust crate with real cryptography (SHA-256 Merkle, Ed25519, MockCommitter, MockSettlementGate, end-to-end integration tests).
+- **Reference implementation (Phase 2):** [proof-of-context-impl](https://github.com/Jc-asastu/proof-of-context-impl) — Rust crate with real cryptography (SHA-256 Merkle, Ed25519, MockCommitter, MockSettlementGate, end-to-end integration tests).
 - **Status:** v0.9.1 (5 July 2026); position paper plus formal model (Theorem 1 + multi-party Corollary 1), and a reference-implementation section gating three of four freshness types against real oracles, with an on-chain dark-pool instantiation and a measured evaluation (§10.6). Public-share-ready.
 
 ### Proof of Context applied to Verifiable Inference (v0.1): first applied paper
@@ -43,7 +43,7 @@ A specialization of the v0.6 framework to commercial inference-as-a-service. Pro
 - **Outline:** [paper-poc-inference-v0.1-outline.md](paper-poc-inference-v0.1-outline.md)
 - **Construction process:** [CASE-V0.7-EXTENSION.md](CASE-V0.7-EXTENSION.md), complete record of the seven rounds of adversarial review that produced the heart sections.
 - **Empirical companion (in private development):** cross-provider Qwen3 14B inference benchmark. Local consumer-tier baseline complete (RTX 5070, 9 cells, methodology documented). Cloud sweep and full publication pending. Findings will be reported inline in §8 of the paper when the study is complete.
-- **Companion crate (forthcoming):** Phase 3 of [proof-of-context-impl](https://github.com/asastuai/proof-of-context-impl) will implement the InferenceReceipt module.
+- **Companion crate (forthcoming):** Phase 3 of [proof-of-context-impl](https://github.com/Jc-asastu/proof-of-context-impl) will implement the InferenceReceipt module.
 - **Status:** v0.1 working draft published 2026-04-27; remaining sections in active writing.
 
 ### Proof of Context applied to Agent Memory (v0.1): third applied paper
@@ -80,7 +80,7 @@ Both papers are citable. For v0.6:
   author={Maisu, Juan Cruz},
   year={2026},
   month={6},
-  howpublished={Position paper, \url{https://github.com/asastuai/proof-of-context}},
+  howpublished={Position paper, \url{https://github.com/Jc-asastu/proof-of-context}},
   note={Version 0.9.1; position paper with formal model (§9: soundness theorem + multi-party corollary), and reference implementation (§10) with real canonical-state oracles, an on-chain dark-pool instantiation (§10.5), and a measured evaluation (§10.6)}
 }
 ```
@@ -93,7 +93,7 @@ For v0.1 applied:
   author={Maisu, Juan Cruz},
   year={2026},
   month={4},
-  howpublished={Working draft, \url{https://github.com/asastuai/proof-of-context}},
+  howpublished={Working draft, \url{https://github.com/Jc-asastu/proof-of-context}},
   note={PoC-Inference v0.1, draft pre-1; heart sections complete}
 }
 ```
@@ -112,11 +112,11 @@ Issues, corrections, replication reports, and co-authorship inquiries are welcom
 
 ## Related work (from the author)
 
-- [proof-of-context-impl](https://github.com/asastuai/proof-of-context-impl) — Rust reference implementation of the framework's primitives
-- [Hermetic Computing (kybalion)](https://github.com/asastuai/kybalion) — Rust framework formalizing the Seven Hermetic Principles as computational primitives
+- [proof-of-context-impl](https://github.com/Jc-asastu/proof-of-context-impl) — Rust reference implementation of the framework's primitives
+- [Hermetic Computing (kybalion)](https://github.com/Jc-asastu/kybalion) — Rust framework formalizing the Seven Hermetic Principles as computational primitives
 - [intent-cipher](https://crates.io/crates/intent-cipher) — Research crate exploring intent-keyed stream ciphers (published v0.2 after public v0.1 reframe)
-- [SUR Protocol](https://github.com/asastuai/sur-protocol) — Perpetual futures DEX with agent-native execution layer (12 contracts, 531 Foundry tests)
-- [Opus narrative](https://asastuai.github.io/opus/) — Six-week human-AI research collaboration documentation
+- [SUR Protocol](https://github.com/Jc-asastu/sur-protocol) — Perpetual futures DEX with agent-native execution layer (12 contracts, 531 Foundry tests)
+- [Opus narrative](https://jc-asastu.github.io/opus/) — Six-week human-AI research collaboration documentation
 
 ---
 
@@ -128,7 +128,7 @@ Issues, corrections, replication reports, and co-authorship inquiries are welcom
 
 ## Contact
 
-Juan Cruz Maisu · [juancmaisu@outlook.com](mailto:juancmaisu@outlook.com) · [github.com/asastuai](https://github.com/asastuai) · [linkedin.com/in/juan-cruz-maisu-b4b610308](https://www.linkedin.com/in/juan-cruz-maisu-b4b610308/)
+Juan Cruz Maisu · [juancmaisu@outlook.com](mailto:juancmaisu@outlook.com) · [github.com/Jc-asastu](https://github.com/Jc-asastu) · [linkedin.com/in/juan-cruz-maisu-b4b610308](https://www.linkedin.com/in/juan-cruz-maisu-b4b610308/)
 
 ---
 

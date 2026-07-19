@@ -2,7 +2,7 @@
 
 **Working title.** *Proof-of-Context applied to agent service settlement: the record-then-check enforcement primitive on EVM chains without Ed25519 precompile.*
 
-**Author:** Juan Cruz Maisú · Buenos Aires · `juancmaisu@outlook.com` · [github.com/asastuai](https://github.com/asastuai).
+**Author:** Juan Cruz Maisú · Buenos Aires · `juancmaisu@outlook.com` · [github.com/Jc-asastu](https://github.com/Jc-asastu).
 
 **Status:** v0.1 working abstract. Drafted 2026-04-30 alongside the v0.1 wire format spec and applied paper #2.
 

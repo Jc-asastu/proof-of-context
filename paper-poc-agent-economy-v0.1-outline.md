@@ -152,7 +152,7 @@ Juan Cruz Maisú ♥
 - First applied paper: PoC v0.1 Inference.
 - Wire format spec: `SPEC-WIRE-FORMAT-v0.1.md`.
 - Reference implementations: 5 GitHub repos.
-- Aletheia umbrella: `github.com/asastuai/aletheia`.
+- Aletheia umbrella: `github.com/Jc-asastu/aletheia`.
 
 ## What to write first
 

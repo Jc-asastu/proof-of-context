@@ -1,7 +1,7 @@
 # Proof-of-Context: The Missing Verification Layer in Decentralized ML Protocols
 
 **Juan Cruz Maisu**
-Buenos Aires, Argentina · juancmaisu@outlook.com · github.com/asastuai
+Buenos Aires, Argentina · juancmaisu@outlook.com · github.com/Jc-asastu
 
 **Version 0.9.1** — **Published: 21 June 2026** (v0.9; patch v0.9.1 of 5 July 2026)
 
@@ -363,11 +363,11 @@ Thresholds are asymmetric because the three clocks have characteristic noise pro
 
 The framing in this paper was not derived in isolation. Three production artifacts from the author's prior work (2025–2026) informed the intuitions that crystallized into proof-of-context, and one of them is the natural testbed for a first deployment. None is *prior art* in the academic sense — they are production software, not published constructions. They are relevant because they establish that the author approached this problem from an agent-infrastructure deployment angle before formalizing it.
 
-**TrustLayer** ([github.com/asastuai/TrustLayer](https://github.com/asastuai/TrustLayer)) is an agent-reputation infrastructure on Base L2 with x402 micropayments. Its reputation-scoring mechanism is a historical sketch of *contextually-appropriate behavior over time* — the dimension proof-of-context formalizes into a real-time settlement primitive rather than an after-the-fact scoring mechanism.
+**TrustLayer** ([github.com/Jc-asastu/TrustLayer](https://github.com/Jc-asastu/TrustLayer)) is an agent-reputation infrastructure on Base L2 with x402 micropayments. Its reputation-scoring mechanism is a historical sketch of *contextually-appropriate behavior over time* — the dimension proof-of-context formalizes into a real-time settlement primitive rather than an after-the-fact scoring mechanism.
 
-**BaseOracle** ([github.com/asastuai/BaseOracle](https://github.com/asastuai/BaseOracle)) is a pay-per-query data oracle for autonomous AI agents on Base, priced via x402 micropayments. BaseOracle enforces contextual freshness on a per-query basis at the data layer and embeds it directly in the payment primitive. The structural insight it operationalized — that *freshness must be verified at pay-time, not discovered retroactively* — is the same discipline §7 constraint 8 imports from DeFi into the compute layer for proof-of-context.
+**BaseOracle** ([github.com/Jc-asastu/BaseOracle](https://github.com/Jc-asastu/BaseOracle)) is a pay-per-query data oracle for autonomous AI agents on Base, priced via x402 micropayments. BaseOracle enforces contextual freshness on a per-query basis at the data layer and embeds it directly in the payment primitive. The structural insight it operationalized — that *freshness must be verified at pay-time, not discovered retroactively* — is the same discipline §7 constraint 8 imports from DeFi into the compute layer for proof-of-context.
 
-**SUR Protocol** ([github.com/asastuai/sur-protocol](https://github.com/asastuai/sur-protocol)) is a perpetual futures DEX with an A2A Dark Pool and agent-to-agent settlement via x402. SUR is the natural testbed for a first deployment of proof-of-context: the settlement rail, agentic counterparty model, on-chain reputation layer, and micropayment infrastructure are already in place. Adding a PoC-gated settlement path for inference-priced trades — where the protocol refuses to settle an inference payment if the execution-context root is too stale relative to the A2A market state — is the smallest real-world test of the primitive. The first construction will be prototyped on SUR before being abstracted into a standalone implementation.
+**SUR Protocol** ([github.com/Jc-asastu/sur-protocol](https://github.com/Jc-asastu/sur-protocol)) is a perpetual futures DEX with an A2A Dark Pool and agent-to-agent settlement via x402. SUR is the natural testbed for a first deployment of proof-of-context: the settlement rail, agentic counterparty model, on-chain reputation layer, and micropayment infrastructure are already in place. Adding a PoC-gated settlement path for inference-priced trades — where the protocol refuses to settle an inference payment if the execution-context root is too stale relative to the A2A market state — is the smallest real-world test of the primitive. The first construction will be prototyped on SUR before being abstracted into a standalone implementation.
 
 ---
 
@@ -387,7 +387,7 @@ The analogy is clean: 2026 decentralized-ML is 2020 DeFi. The next three years o
 
 ## Acknowledgements
 
-This paper was drafted and refined iteratively with Claude (Anthropic) as a research assistant: literature survey, argument pressure-testing, and critical feedback across multiple revision rounds. The author is the sole intellectual author and is solely responsible for all claims, errors, and design choices. The collaboration is documented in the public narrative *Opus* ([asastuai.github.io/opus](https://asastuai.github.io/opus/)).
+This paper was drafted and refined iteratively with Claude (Anthropic) as a research assistant: literature survey, argument pressure-testing, and critical feedback across multiple revision rounds. The author is the sole intellectual author and is solely responsible for all claims, errors, and design choices. The collaboration is documented in the public narrative *Opus* ([jc-asastu.github.io/opus](https://jc-asastu.github.io/opus/)).
 
 The v0.5 revision absorbs substantive critique on the framing (reformulating the distinction from PAL\*M onto the attestation-as-settlement axis), the internal structure (decomposing freshness into four distinct types, reorganizing §6 accordingly), the threat model (replacing a too-strong "three orthogonal clocks" claim with an honest "triple-anchor under a valid TEE attestation chain" claim), the construction details (prospective-only root bumps, runtime-upgrade notice period, historical-weight data-availability requirement, execution-context root scope formalization with attribution to TOPLOC), and the academic presentation (removal of miscategorized "prior art" section, addition of protocol survey matrix, correction of reference-list errors in a prior v0.3.1 patch).
 
@@ -423,7 +423,7 @@ Nine production or testnet decentralized-ML protocols reviewed along the verific
 
 This paper is released under CC BY 4.0. To cite:
 
-> Maisu, J. C. (2026). *Proof-of-Context: The Missing Verification Layer in Decentralized ML Protocols* (Version 0.9.1) [Position paper]. github.com/asastuai/proof-of-context, 5 July 2026.
+> Maisu, J. C. (2026). *Proof-of-Context: The Missing Verification Layer in Decentralized ML Protocols* (Version 0.9.1) [Position paper]. github.com/Jc-asastu/proof-of-context, 5 July 2026.
 
 ---
 
@@ -513,7 +513,7 @@ This paper is released under CC BY 4.0. To cite:
 
 1. **Direct-verified flagged references [8] FedPSA, [22] TensorCommitments, [26] Context Kubernetes, and [18] CIV** against primary arxiv sources. All four resolve to real papers with correct metadata; the CIV title verbatim on arxiv is "Can AI Keep a Secret? Contextual Integrity Verification: A Provable Security Architecture for LLMs" (single paper by Aayush Gupta, arXiv:2508.09288) — confirming the v0.5 citation against the v0.3 version that had paraphrased the title.
 
-2. **Author's production work removed from numbered reference list.** The former reference [32] ("Author's production work: github.com/asastuai ...") was a personal-repository URL, not a published artifact, which is non-standard in a numbered bibliography. The material moves entirely into §10 "Author Background and Deployment Path" as inline URL citations, reserving the numbered reference list for published work.
+2. **Author's production work removed from numbered reference list.** The former reference [32] ("Author's production work: github.com/Jc-asastu ...") was a personal-repository URL, not a published artifact, which is non-standard in a numbered bibliography. The material moves entirely into §10 "Author Background and Deployment Path" as inline URL citations, reserving the numbered reference list for published work.
 
 3. **§9 subsection 3 threat-model consistency sentence added.** v0.6 added a sentence connecting the threat model to §7 constraint 6 on the TEE-timing/attestation relationship. *(v0.7 erratum: that sentence's original framing — that TDXdown-class attacks are "caught at the attestation layer" — was incorrect and is superseded. Attestation certifies launch-time code integrity, not the runtime timing channel, so a TDXdown-affected enclave passes attestation; that residual trust is carried by the explicit honest-clock assumption, §9.4 (H3b). The triple-anchor remains calibrated for the honest-clock regime and is explicitly not the last line of defense against enclave compromise. See the corrected §7 constraint 6, §9.4–§9.5, and §11.)*
 

@@ -8,7 +8,7 @@
 
 ## 1. Purpose
 
-This document specifies the on-wire shape of a Proof-of-Context (PoC) attestation as it travels between protocol participants: producer → consumer → settlement-gate. It is the byte-level equivalent of the conceptual primitive defined in the position paper at [github.com/asastuai/proof-of-context](https://github.com/asastuai/proof-of-context) (v0.6, 22 April 2026).
+This document specifies the on-wire shape of a Proof-of-Context (PoC) attestation as it travels between protocol participants: producer → consumer → settlement-gate. It is the byte-level equivalent of the conceptual primitive defined in the position paper at [github.com/Jc-asastu/proof-of-context](https://github.com/Jc-asastu/proof-of-context) (v0.6, 22 April 2026).
 
 The format emerged from running the same primitive through four independent consumer surfaces — pay-per-query data, agent wallets, reputation aggregation, and DeFi risk feeds — and observing that the shape converged organically. This spec promotes that convergence to a stable contract so independent integrators can interop without coordinating individually.
 
@@ -198,11 +198,11 @@ The wire format is implemented across these repositories:
 
 | Repo | Language | Producer / Consumer | Hashing scheme | Path |
 |---|---|---|---|---|
-| [proof-of-context-impl](https://github.com/asastuai/proof-of-context-impl) | Rust | both | typed Merkle (over fields) | `src/commitment.rs`, `src/clients/` |
-| [BaseOracle](https://github.com/asastuai/BaseOracle) | JavaScript | producer | canonical JSON + SHA-256 | `src/utils/poc.js`, `src/utils/poc-anchors.js` |
-| [TrustLayer](https://github.com/asastuai/TrustLayer) | JavaScript | producer (multi-type) | canonical JSON + SHA-256 | `src/utils/poc.js`, `src/utils/poc-anchors.js` |
-| [Vigil](https://github.com/asastuai/vigil) | TypeScript | producer | canonical JSON + SHA-256 | `packages/core/src/poc.ts`, `packages/core/src/poc-anchors.ts` |
-| [PayClaw](https://github.com/asastuai/payclaw) | TypeScript | consumer (verifier) | canonical JSON + SHA-256 | `packages/sdk/src/poc.ts` |
+| [proof-of-context-impl](https://github.com/Jc-asastu/proof-of-context-impl) | Rust | both | typed Merkle (over fields) | `src/commitment.rs`, `src/clients/` |
+| [BaseOracle](https://github.com/Jc-asastu/BaseOracle) | JavaScript | producer | canonical JSON + SHA-256 | `src/utils/poc.js`, `src/utils/poc-anchors.js` |
+| [TrustLayer](https://github.com/Jc-asastu/TrustLayer) | JavaScript | producer (multi-type) | canonical JSON + SHA-256 | `src/utils/poc.js`, `src/utils/poc-anchors.js` |
+| [Vigil](https://github.com/Jc-asastu/vigil) | TypeScript | producer | canonical JSON + SHA-256 | `packages/core/src/poc.ts`, `packages/core/src/poc-anchors.ts` |
+| [PayClaw](https://github.com/Jc-asastu/payclaw) | TypeScript | consumer (verifier) | canonical JSON + SHA-256 | `packages/sdk/src/poc.ts` |
 
 The four JavaScript and TypeScript implementations produce byte-identical canonical-JSON SHA-256 hashes for the same payload and verify each other's signatures. Each one is tested against the authoritative test vectors at [`test-vectors/v0.1.json`](./test-vectors/v0.1.json) — three vectors covering the simple-flat, nested-with-array, and empty-object cases.
 
@@ -237,7 +237,7 @@ The following items are intentionally left under-specified in v0.1 and tracked a
   title={Proof-of-Context Wire Format v0.1},
   author={Maisu, Juan Cruz},
   year={2026},
-  howpublished={\url{https://github.com/asastuai/proof-of-context/blob/main/SPEC-WIRE-FORMAT-v0.1.md}},
+  howpublished={\url{https://github.com/Jc-asastu/proof-of-context/blob/main/SPEC-WIRE-FORMAT-v0.1.md}},
   note={Working specification, derived from reference implementations across BaseOracle, TrustLayer, Vigil, PayClaw, and proof-of-context-impl}
 }
 ```

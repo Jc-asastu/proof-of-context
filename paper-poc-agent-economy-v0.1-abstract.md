@@ -2,7 +2,7 @@
 
 **Working title.** *Proof-of-Context applied to the agent economy infrastructure: a multi-producer wire-format study with five reference implementations.*
 
-**Author:** Juan Cruz Maisú · Buenos Aires · `juancmaisu@outlook.com` · [github.com/asastuai](https://github.com/asastuai).
+**Author:** Juan Cruz Maisú · Buenos Aires · `juancmaisu@outlook.com` · [github.com/Jc-asastu](https://github.com/Jc-asastu).
 
 **Status:** v0.1 working abstract, drafted 2026-04-30. Paper drafting follows.
 

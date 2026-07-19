@@ -51,9 +51,9 @@ central claims.
 I am attaching the paper as PDF and the canonical Markdown
 source. Materials and code:
 
-  Paper:           https://github.com/asastuai/proof-of-context
-  Wire format:     https://github.com/asastuai/proof-of-context/blob/main/SPEC-WIRE-FORMAT-v0.1.md
-  Reference impl:  https://github.com/asastuai/proof-of-context-impl
+  Paper:           https://github.com/Jc-asastu/proof-of-context
+  Wire format:     https://github.com/Jc-asastu/proof-of-context/blob/main/SPEC-WIRE-FORMAT-v0.1.md
+  Reference impl:  https://github.com/Jc-asastu/proof-of-context-impl
 
 If you are willing to endorse, the arXiv endorsement code I would
 need to enter is:
@@ -74,7 +74,7 @@ With appreciation for your time,
 
 Juan Cruz Maisú
 juancmaisu@outlook.com
-github.com/asastuai
+github.com/Jc-asastu
 linkedin.com/in/juan-cruz-maisu-b4b610308
 ```
 

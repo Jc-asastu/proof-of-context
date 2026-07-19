@@ -17,11 +17,11 @@ references:
         given-names: "Juan Cruz"
     year: 2026
     notes: "PoC-Inference v0.1, working draft pre-1; heart sections complete, surrounding sections forthcoming. Published 2026-04-27."
-    url: "https://github.com/asastuai/proof-of-context"
-url: "https://github.com/asastuai/proof-of-context"
+    url: "https://github.com/Jc-asastu/proof-of-context"
+url: "https://github.com/Jc-asastu/proof-of-context"
 license: "CC-BY-4.0"
 type: "article"
-repository-code: "https://github.com/asastuai/proof-of-context"
+repository-code: "https://github.com/Jc-asastu/proof-of-context"
 keywords:
   - "verifiable computing"
   - "decentralized machine learning"

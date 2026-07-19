@@ -2,7 +2,7 @@
 
 **Working title.** *Proof-of-Context applied to agent memory: persisted context, renewable attestations, and the read-time freshness gate.*
 
-**Author:** Juan Cruz Maisú · Buenos Aires · `juancmaisu@outlook.com` · [github.com/asastuai](https://github.com/asastuai).
+**Author:** Juan Cruz Maisú · Buenos Aires · `juancmaisu@outlook.com` · [github.com/Jc-asastu](https://github.com/Jc-asastu).
 
 **Status:** v0.1 working abstract, drafted 2026-07-17. Outline follows in `paper-poc-agent-memory-v0.1-outline.md`.
 

@@ -1,7 +1,7 @@
 {
   "spec_version": "0.1",
   "description": "Cross-language test vectors for the Proof-of-Context wire format. Each vector specifies a payload and the expected canonical JSON serialization (sorted keys, no whitespace, RFC 8259) and the expected SHA-256 hash of the canonical JSON. Reference implementations across JavaScript, TypeScript, and Rust must all produce these exact values for the convergence claim of paper #2 (Agent Economy Infrastructure) §7.2 to hold empirically. Vectors are authoritative; if an implementation disagrees, the implementation has drifted from the spec.",
-  "spec_url": "https://github.com/asastuai/proof-of-context/blob/main/SPEC-WIRE-FORMAT-v0.1.md",
+  "spec_url": "https://github.com/Jc-asastu/proof-of-context/blob/main/SPEC-WIRE-FORMAT-v0.1.md",
   "vectors": [
     {
       "id": "v1-simple-flat",

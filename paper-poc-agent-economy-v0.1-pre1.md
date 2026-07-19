@@ -2,7 +2,7 @@
 
 **Working draft, pre-1.** Heart sections (§4 Specialization, §5 The wire format, §6 Threat model, §7 Empirical observations) drafted 2026-05-01. Surrounding sections (§1, §2, §3, §8, §9, §10) follow the outline at `paper-poc-agent-economy-v0.1-outline.md`. The introduction and conclusion in that outline are written in author voice; the heart sections below are in standard academic register per the paper's hybrid mode.
 
-**Author:** Juan Cruz Maisú · Buenos Aires · `juancmaisu@outlook.com` · [github.com/asastuai](https://github.com/asastuai).
+**Author:** Juan Cruz Maisú · Buenos Aires · `juancmaisu@outlook.com` · [github.com/Jc-asastu](https://github.com/Jc-asastu).
 
 ---
 

@@ -239,7 +239,7 @@ If a technical reviewer asks *"how is this different from Verifiable Dropout, TO
 
 ## Construction sketch scaffold (Phase 3 preview)
 
-With Phase 2 complete, the construction we scaffold in `asastuai/proof-of-context-impl` should:
+With Phase 2 complete, the construction we scaffold in `Jc-asastu/proof-of-context-impl` should:
 
 1. **Extend the context-payload shape** of Verifiable Dropout from `(model_id, step, batch, nonce, layer)` to `(model_id, step, batch, nonce, layer, cache_root, timestamp_round, freshness_threshold)` — the last three fields are the novel contribution.
 
@@ -272,7 +272,7 @@ This scaffold will be encoded as Rust traits with `unimplemented!()` bodies in t
 ## Phase 3 next actions
 
 1. Write paper v0.3 incorporating the diff above (est. 2–3h)
-2. Scaffold `asastuai/proof-of-context-impl` Rust crate with traits, README, ROADMAP, ARCHITECTURE (est. 1.5h)
+2. Scaffold `Jc-asastu/proof-of-context-impl` Rust crate with traits, README, ROADMAP, ARCHITECTURE (est. 1.5h)
 3. Commit + push — establish second timestamp after v0.2 + code
 4. Update Opus site card and CV to reference v0.3
 

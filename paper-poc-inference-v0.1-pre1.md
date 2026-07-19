@@ -4,13 +4,13 @@ subtitle: "A receipt-based dispute layer over TEE-attested commercial inference"
 designation: "PoC-Inference v0.1 — first applied paper of the Proof of Context family"
 author: "Juan Cruz Maisu"
 affiliation: "Independent · Buenos Aires, Argentina"
-contact: "juancmaisu@outlook.com · github.com/asastuai"
+contact: "juancmaisu@outlook.com · github.com/Jc-asastu"
 draft_version: "v0.1-pre1 (heart sections complete; surrounding sections forthcoming)"
 date_started: "2026-04-25"
 abstract_file: "paper-poc-inference-v0.1-abstract.md"
 outline_file: "paper-poc-inference-v0.1-outline.md"
 case_file: "CASE-V0.7-EXTENSION.md"
-companion_crate: "github.com/asastuai/proof-of-context-impl (Phase 2 shipped; Phase 3 forthcoming)"
+companion_crate: "github.com/Jc-asastu/proof-of-context-impl (Phase 2 shipped; Phase 3 forthcoming)"
 companion_data: "Cross-provider Qwen3 14B inference benchmark — local baseline shipped, cloud sweep pending; in private development, findings reported inline in §8 when complete"
 status: "Working draft. Heart sections (§4 Four Dimensions, §5 Inference Receipt, §6 Threat Model) complete. Surrounding sections (§1, §2, §3, §7-§11) scaffolded in the outline and forthcoming."
 ---
@@ -307,7 +307,7 @@ We turn next to the reference implementation that demonstrates the receipt forma
 
 > Thesis (per outline §7): The `proof-of-context-impl` crate, Phase 3, is a Rust reference implementation of the receipt format with mocked TEE attestation, integration tests for the four dimensions, and benchmarked overhead measurements.
 >
-> Status: Phase 2 of [`proof-of-context-impl`](https://github.com/asastuai/proof-of-context-impl) is shipped (real cryptography — SHA-256 Merkle, Ed25519, MockCommitter, MockSettlementGate). Phase 3 (the inference-specific receipt module) is specified in the outline §7 and will be implemented before this section is written. Seven paragraphs scaffolded.
+> Status: Phase 2 of [`proof-of-context-impl`](https://github.com/Jc-asastu/proof-of-context-impl) is shipped (real cryptography — SHA-256 Merkle, Ed25519, MockCommitter, MockSettlementGate). Phase 3 (the inference-specific receipt module) is specified in the outline §7 and will be implemented before this section is written. Seven paragraphs scaffolded.
 
 ---
 
@@ -356,7 +356,7 @@ This is **PoC-Inference v0.1, working draft pre-1**. Published 2026-04-27.
 **What is not yet here:**
 
 - **§1, §2, §3, §9, §10, §11** are scaffolded in the outline and will be written in the next revision pass. These are framing, context, and closure — they do not change the conceptual contribution, which is fully present in §4-§6.
-- **§7** depends on Phase 3 of the [`proof-of-context-impl`](https://github.com/asastuai/proof-of-context-impl) crate. Phase 2 is shipped. Phase 3 (the inference-specific receipt module) will be implemented before §7 is written.
+- **§7** depends on Phase 3 of the [`proof-of-context-impl`](https://github.com/Jc-asastu/proof-of-context-impl) crate. Phase 2 is shipped. Phase 3 (the inference-specific receipt module) will be implemented before §7 is written.
 - **§8** depends on the cloud-tier sweep of a companion Qwen3 14B inference benchmark study (in private development). The local consumer-tier baseline (9 cells on RTX 5070) is complete; the cloud sweep is pending. Findings will be reported inline when the study reaches publication-grade completeness.
 - **§12** (references) will be assembled with the anti-hallucination discipline established after the v0.3 incident in PoC v0.6.
 

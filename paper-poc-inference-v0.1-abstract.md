@@ -2,10 +2,10 @@
 
 ## A receipt-based dispute layer over TEE-attested commercial inference (PoC-Inference v0.1)
 
-**Author:** Juan Cruz Maisu — Buenos Aires, Argentina · [github.com/asastuai](https://github.com/asastuai)
+**Author:** Juan Cruz Maisu — Buenos Aires, Argentina · [github.com/Jc-asastu](https://github.com/Jc-asastu)
 **Status:** working draft, target v0.1 publication
 **Length target:** ~7,000-8,000 words
-**Companion artifact:** [`proof-of-context-impl`](https://github.com/asastuai/proof-of-context-impl) crate, Phase 3
+**Companion artifact:** [`proof-of-context-impl`](https://github.com/Jc-asastu/proof-of-context-impl) crate, Phase 3
 
 ---
 
