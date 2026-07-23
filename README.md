@@ -18,8 +18,9 @@ The family currently includes two papers and one wire-format specification:
 Byte-level shape of a PoC attestation as it travels between protocol participants. Emerged from running the same primitive through four independent consumer surfaces and observing convergence. Promotes the convergence to a stable contract so independent integrators can interop without coordinating individually.
 
 - **Specification:** [SPEC-WIRE-FORMAT-v0.1.md](SPEC-WIRE-FORMAT-v0.1.md)
+- **Backing-Age extension:** [SPEC-BACKING-AGE-v0.1.md](SPEC-BACKING-AGE-v0.1.md) — un-resettable source-age propagation for agent pipelines (`backing` field over the `_poc` block): RFC 9111 `Age` semantics transferred to agent context, with a normative privacy rule (full backing sets never cross trust boundaries; a single scalar aggregate does). Reference implementation in `proof-of-context-impl` (`src/backing.rs`, 15 tests + runnable laundering demo), first deployment in the engram-live agent-memory sidecar.
 - **Reference implementations:** Rust ([proof-of-context-impl](https://github.com/Jc-asastu/proof-of-context-impl)), JavaScript (BaseOracle, TrustLayer), TypeScript (Vigil, PayClaw).
-- **Status:** v0.1 published 2026-04-30. All five reference implementations produce byte-identical canonical hashes and verify each other's signatures.
+- **Status:** v0.1 published 2026-04-30. All five reference implementations produce byte-identical canonical hashes and verify each other's signatures. Backing-Age extension added 2026-07-22.
 
 ---
 
