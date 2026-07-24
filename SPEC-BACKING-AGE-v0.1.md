@@ -75,6 +75,20 @@ The backing set is a provenance trace. Sent raw across a trust boundary it leaks
 
 **v0.1 build impact:** `BackingSet` gets `to_boundary() -> BoundaryAge` (the aggregate form); the MCP/A2A proposal (utility #4) proposes the *aggregate* field, never the raw set.
 
+## 2.6 Signing (v0.2a — closes forgery; omission is v0.2b)
+
+v0.1 backing is honest-metadata plumbing: a malicious or buggy stage can forge a fresh `attested_at` to launder staleness. v0.2a closes **forgery** by signing entries, reusing PoC's existing Ed25519 machinery.
+
+- **`SignedBackingEntry`** = `(entry, content_hash, signature, validator_pubkey)`. The signature is over `SHA-256(len(source_id)‖source_id‖attested_at‖len(class)‖class‖content_hash)` — variable-length fields length-prefixed so boundaries cannot be shifted to collide. Only the source's **validator** (the party that checked it against ground truth — e.g. the engram-live sidecar, a price oracle) holds the signing key.
+- **`TrustedValidators`** — the consumer's set of trusted validator public keys. `is_trusted` = signature valid **and** `validator_pubkey ∈ trusted`. A forger can produce a valid signature under their *own* key, but it is not trusted.
+- **`SignedBackingSet::into_verified(trusted) -> (BackingSet, rejected)`** projects the trusted-and-valid entries down to a plain v0.1 `BackingSet`, so the existing `gate` applies unchanged. `rejected` is an observability signal (present-but-untrusted entries dropped).
+
+**What v0.2a does NOT close — stated as loudly as v0.1's forgery gap:** **omission.** A malicious stage can drop a signed entry entirely, or present an empty backing set; signing makes entries unforgeable, not un-omittable. The attack shifts from "forge a fresh timestamp" (closed) to "hide the stale source" (open) — which is *more detectable* (a consumer expecting backing from a source class and seeing none can flag it) but not prevented.
+
+**v0.2b (open frontier).** Closing omission requires each stage to sign a commitment to its *whole* propagated backing set, chained across stages — an attestation chain that makes every stage a signing participant and **breaks v0.1's stage transparency**. This is the "compound attestation for multi-hop agent chains" open challenge (Forough et al., arXiv 2605.03213); likely needs a per-stage trust root (TEE) or an accountability model. Deferred, with its own design gate.
+
+Privacy (§2.5) is unaffected: signatures are intra-domain; the boundary aggregate (`BoundaryAge`) still carries only a scalar. Reference impl + runnable forgery demo: `proof-of-context-impl` (`src/backing.rs`, `examples/staleness_laundering.rs`).
+
 ## 3. Lineage (cite, don't claim)
 
 RFC 9111 §4.2.3 Age semantics (the direct ancestor — this is its transfer to agent context) · event-time/watermarks (Dataflow 2015, Flink) · TOCTOU in LLM agent chains (arXiv 2508.17155) · Copilot 2004 window-of-vulnerability · PoC framework v0.9.1 (freshness dimensions, triple-anchor) · Forough et al. arXiv 2605.03213 (the open challenge this partially addresses, minimally, without TEEs). Novelty claim: **none beyond the transfer + working artifact.** The delta over RFC 9111: HTTP tracks one origin per response; agent context is a *DAG fan-in* (union of backings), and the consumer gates per-class. That is engineering, and it is enough.
