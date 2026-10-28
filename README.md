@@ -118,7 +118,7 @@ Issues, corrections, replication reports, and co-authorship inquiries are welcom
 
 - [proof-of-context-impl](https://github.com/Jc-asastu/proof-of-context-impl) — Rust reference implementation of the framework's primitives
 - [SUR Protocol](https://github.com/Jc-asastu/sur-protocol) — Perpetual futures DEX with agent-native execution layer (12 contracts, 531 Foundry tests)
-- [Opus narrative](https://jc-asastu.github.io/opus/) — Six-week human-AI research collaboration documentation
+- [Dokimos](https://github.com/Jc-asastu/dokimos) — Attestation layer for AI agent memory: each memory carries the condition that would make it false, verdicts renew, facts persist. The applied counterpart of the agent-memory paper
 
 ---
 
