@@ -90,7 +90,7 @@ The `payload_hash` is computed over the canonical JSON of the message with the `
 3. Compute SHA-256 over the UTF-8 bytes of the resulting string.
 4. Encode as lowercase hex.
 
-All five reference implementations produce byte-identical hashes for the same input under these rules. The empirical confirmation of cross-language equivalence is reported in §7.
+The four JavaScript and TypeScript implementations produce byte-identical hashes for the same input under these rules. The Rust crate uses a typed Merkle construction over the same fields and differs by design. The empirical confirmation of cross-language equivalence is reported in §7.
 
 ### 5.3 The signing message
 

@@ -98,7 +98,3 @@ Sidecar validation layer beside Mem0/Zep/Letta: source-linked re-fetch, temporal
 4. **STALE's 55.2% is the motivation number** for "the model cannot introspect its way to freshness; the substrate must carry the verdict."
 5. **The Atlan post proves convergent pressure** on the DeFi-analogy framing. Publish before the analogy gets formalized by someone else — the same clock that ran on the position paper runs here.
 6. **Add the hallucinated-ContextNest incident** to §6 (failure model) as a live example of confident stale/false recall: a system that trusted one unverified fetch would have shipped a wrong Related Work section.
-
----
-
-Juan Cruz Maisú ♥

@@ -1,6 +1,6 @@
 # SPEC — Formal Core for Proof-of-Context v0.7
 
-**Status:** design spec, pending author review. No paper prose written yet.
+**Status:** design spec written before drafting v0.7. Its content now lives in §9–§10 of the paper (current version v0.9.1); kept as the record of the design decisions.
 **Author:** Juan Cruz Maisú
 **Purpose:** Define exactly what v0.7 of the flagship position paper (`paper/proof-of-context.md`) adds, so the additions can be reviewed *before* drafting.
 
@@ -166,13 +166,13 @@ Reports from the `proof-of-context` crate **v0.2** (MIT OR Apache-2.0, pure Rust
 
 ---
 
-## 8. Open questions for the author (decide before drafting)
+## 8. Design questions at drafting time
 
 1. **§4 framing:** strict (a) or looser (b)? (Recommend **a**.)
 2. **Optional code change:** wire `max_fc_blocks` into the gate so f_c is a genuinely-enforced horizon (makes (b) honest, lets Theorem 1 cover 3 predicates)? **Yes / no / later.**
 3. **Renumber** §9–§11 cleanly, or append as §8.x? (Recommend clean renumber.)
-4. **Theorem ambition:** is the modest Theorem 1 (soundness for the enforced subset) the right altitude, or do you want me to also attempt a *completeness* direction (honest workers are never wrongly rejected) — which is harder and may not hold given the tight ±2-block consistency check? (Recommend: Theorem 1 only for v0.7; note completeness as open.)
-5. **arXiv category + endorsement:** target `cs.CR` (primary) + `cs.LG`/`cs.DC` (cross-list)? You already have `OUTREACH-ARXIV-ENDORSEMENT.md` staged — confirm the endorsement path is real before we treat arXiv as the destination.
+4. **Theorem ambition:** is the modest Theorem 1 (soundness for the enforced subset) the right altitude, or should a *completeness* direction (honest workers are never wrongly rejected) also be attempted — which is harder and may not hold given the tight ±2-block consistency check? (Recommend: Theorem 1 only for v0.7; note completeness as open.)
+5. **arXiv category + endorsement:** target `cs.CR` (primary) + `cs.LG`/`cs.DC` (cross-list). The endorsement path must be confirmed before arXiv is treated as the destination.
 
 ---
 

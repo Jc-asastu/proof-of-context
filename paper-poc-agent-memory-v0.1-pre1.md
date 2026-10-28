@@ -301,7 +301,3 @@ And this time the gap measured itself. The store that holds this program's own h
 A memory that never expires is not alive. A memory whose validity is renewed, and whose reads say so, is.
 
 The fact persists. The attestation renews.
-
----
-
-Juan Cruz Maisú ♥

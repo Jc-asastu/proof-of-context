@@ -51,7 +51,3 @@ The paper does not propose new cryptography. It argues the intermediate enforcem
 > *PoC v0.6 said attestations should be economically perishable.*
 > *This paper specifies how to enforce that on a chain without an Ed25519 precompile.*
 > *And is honest about where the trust then has to go.*
-
----
-
-Juan Cruz Maisú ♥

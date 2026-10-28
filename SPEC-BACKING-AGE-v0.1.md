@@ -1,4 +1,4 @@
-# SPEC — Backing-Age Extension v0.1 (DRAFT — not committed, pending Juan's go)
+# SPEC — Backing-Age Extension v0.1 (draft)
 
 **Date:** 2026-07-22
 **Extends:** SPEC-WIRE-FORMAT-v0.1 (`_poc` block) · PoC framework paper v0.9.1 · poc-agent-memory pre1
@@ -10,13 +10,13 @@
 
 HTTP solved staleness laundering in 1997 with the `Age` header (RFC 9111 §4.2.3: age is the *sum of residence times along the path from origin* — intermediate caches never reset it). Agent pipelines forgot it: every LLM derivation stamps its output "now," laundering the age of the sources it derived from. This extension makes the clock un-resettable for agent context.
 
-## 1. Intent (Phase 0 block)
+## 1. Scope
 
-- **Qué es:** un campo `backing` en el bloque `_poc` + una regla de propagación: todo output de pipeline hereda la unión de los backings de sus inputs, con `attested_at` original — nunca se resetea en derivación.
-- **Para quién:** operadores de pipelines de agentes (empezando por nosotros: engram-live, PoC-impl) que hoy eligen entre re-verificar todo o comerse incidentes de contexto stale.
-- **Por qué ahora:** la ola 2026 de agentic attestation (Forough et al. listan "compound attestation for multi-hop agent chains" como open challenge); PoC ya tiene el wire format y la instanciación agent-memory (pre1, 07-18) donde esto encaja como pieza faltante.
-- **Done de este ciclo:** (1) spec del campo + regla, (2) módulo `backing.rs` en proof-of-context-impl con tests, (3) demo que muestra el lavado y su fix (extensión de `memory_freshness.rs`), (4) dogfood engram-live: el warning de prosa "memory is 96 days old" reemplazado por metadato `backing` real.
-- **Kill criteria:** si al construirlo resulta que el metadato no cambia ninguna decisión en el dogfood (el gate con backing decide igual que sin él), es plomería sin cliente → se documenta y se para.
+- **What:** a `backing` field in the `_poc` block plus a propagation rule: every pipeline output inherits the union of its inputs' backings, with the original `attested_at`. The clock is never reset on derivation.
+- **For whom:** operators of agent pipelines, who today either re-verify everything or accept incidents caused by stale context.
+- **Why now:** agentic attestation is an active 2026 topic (Forough et al. list "compound attestation for multi-hop agent chains" as an open challenge), and PoC already has the wire format and the agent-memory instantiation (poc-agent-memory pre1) where this is the missing piece.
+- **Deliverables:** (1) this spec, (2) a `backing.rs` module in `proof-of-context-impl` with tests, (3) a demo of the laundering attack and its fix (extension of `memory_freshness.rs`), (4) a dogfood deployment in the engram-live agent-memory sidecar, replacing the prose warning "memory is 96 days old" with real `backing` metadata.
+- **Falsification criterion:** if, in the dogfood deployment, the gate with backing decides identically to the gate without it, the field is plumbing without a consumer, and the extension is dropped.
 
 ## 2. Design
 
@@ -93,14 +93,14 @@ Privacy (§2.5) is unaffected: signatures are intra-domain; the boundary aggrega
 
 RFC 9111 §4.2.3 Age semantics (the direct ancestor — this is its transfer to agent context) · event-time/watermarks (Dataflow 2015, Flink) · TOCTOU in LLM agent chains (arXiv 2508.17155) · Copilot 2004 window-of-vulnerability · PoC framework v0.9.1 (freshness dimensions, triple-anchor) · Forough et al. arXiv 2605.03213 (the open challenge this partially addresses, minimally, without TEEs). Novelty claim: **none beyond the transfer + working artifact.** The delta over RFC 9111: HTTP tracks one origin per response; agent context is a *DAG fan-in* (union of backings), and the consumer gates per-class. That is engineering, and it is enough.
 
-## 4. Build plan (pending go)
+## 4. Build plan
 
 | Phase | Deliverable | Where |
 |---|---|---|
-| B1 | This spec, reviewed by Juan | proof-of-context (canonical: Desktop\active\proof-of-context) |
-| B2 | `backing.rs`: `BackingEntry`, `BackingSet` (union/dedup/oldest-wins), `gate()` + property tests (union associative-commutative-idempotent; propagation never decreases any age; dedup keeps oldest) | proof-of-context-impl (Desktop\active\proof-of-context-impl) |
+| B1 | This spec | proof-of-context |
+| B2 | `backing.rs`: `BackingEntry`, `BackingSet` (union/dedup/oldest-wins), `gate()` + property tests (union associative-commutative-idempotent; propagation never decreases any age; dedup keeps oldest) | proof-of-context-impl |
 | B3 | Demo: extend `memory_freshness.rs` — show the laundering (summary stamped now, backed by April source) caught by the gate; without backing, silently passes | examples/ |
 | B4 | Dogfood: engram-live emits/consumes `backing` on session summaries; replace prose staleness warning with metadata verdict | engram-live sidecar |
 | B5 | README section + wire-format changelog; TS mirror in clients/ if B4 lands well | both repos |
 
-Sequence: B1 → B2 → B3 (one PR-shaped unit), then B4 as its own unit. No commits/pushes until Juan asks (local-first rule).
+Sequence: B1 → B2 → B3 (one unit), then B4 as its own unit.

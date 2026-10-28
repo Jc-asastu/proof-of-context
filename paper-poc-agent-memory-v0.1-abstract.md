@@ -61,7 +61,3 @@ The three instantiations now span: the theory (position paper), the market (the 
 > *The position paper said attestations should be economically perishable.*
 > *Agent memory is the surface where every attestation is already perishing and nothing measures it.*
 > *This paper puts the verdict on the read path: the fact persists, the attestation renews.*
-
----
-
-Juan Cruz Maisú ♥

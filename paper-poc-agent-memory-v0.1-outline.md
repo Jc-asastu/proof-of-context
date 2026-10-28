@@ -129,7 +129,3 @@ The theory. The market. The mind.
 Same skeleton in all three: a fact, a renewable attestation, a verdict at the moment of use. In the dark pool the witness attests price. In the compute papers it attests context of execution. In memory it attests knowledge.
 
 Memory was always the purest case. It is context with nothing else underneath.
-
----
-
-Juan Cruz Maisú ♥

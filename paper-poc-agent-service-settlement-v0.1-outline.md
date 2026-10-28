@@ -176,11 +176,6 @@ What the paper offers is the rationale, fully explicit, so the consequence is ad
 If you are an integrator weighing your gas budget against your trust assumptions, this is the spectrum. Pick where on it you want to live. The reference implementation is `PoCVerifier.sol`. Twelve Foundry tests passing. Composes with the wire format spec at v0.1.
 
 Build with eyes open.
-
----
-
-Juan Cruz Maisú ♥
-
 ---
 
 ## Companion artifacts to cite inline

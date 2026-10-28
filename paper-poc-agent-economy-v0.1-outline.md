@@ -134,16 +134,11 @@ It documents the contract. It publishes the spec. It puts a version number on th
 
 The agent economy needs interoperability infrastructure that does not yet exist as a stable contract. This paper is one offering of that contract. It is small. It will not solve everything. It is the format that emerged when i tried.
 
-If you are integrating, the spec lives at `SPEC-WIRE-FORMAT-v0.1.md`. The verification protocol is ten ordered checks. The rejection codes are structured. The reference implementations are five repositories. All five produce byte-identical canonical hashes.
+If you are integrating, the spec lives at `SPEC-WIRE-FORMAT-v0.1.md`. The verification protocol is ten ordered checks. The rejection codes are structured. The reference implementations are five repositories. The four JavaScript and TypeScript implementations produce byte-identical canonical-JSON hashes; the Rust crate differs by design.
 
 Adopt the format and the convergence widens.
 
 That is the contribution.
-
----
-
-Juan Cruz Maisú ♥
-
 ---
 
 ## Companion artifacts to cite inline

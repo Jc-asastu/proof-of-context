@@ -40,7 +40,7 @@ i document this empirically across five reference implementations:
 - an agent wallet SDK (PayClaw, TypeScript, consuming attestations as release condition)
 - a Rust reference crate for the primitive itself (proof-of-context-impl)
 
-All five produce byte-identical canonical hashes. All five verify each other's signatures. The wire format is published as a versioned working specification.
+The four JavaScript and TypeScript implementations produce byte-identical canonical-JSON hashes and verify each other's signatures. The Rust crate uses a typed Merkle construction over the same fields, so its hashes differ by design. The wire format is published as a versioned working specification.
 
 The paper makes four contributions:
 
@@ -60,7 +60,3 @@ The paper does not claim a new cryptographic primitive. It claims that the exist
 > *PoC v0.6 said attestations should be economically perishable.*
 > *Four agent-economy reference implementations all built the same `_poc` block independently.*
 > *This paper documents what that block is, why it converged, and what it does not yet cover.*
-
----
-
-Juan Cruz Maisú ♥
