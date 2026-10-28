@@ -11,7 +11,7 @@
 
 This repository hosts the Proof of Context family of papers, a small body of work that proposes attestation-based verification primitives for decentralized machine learning settings, framed as a complement to (not a replacement for) cryptographic proof systems like zkML.
 
-The family currently includes two papers and one wire-format specification:
+The family currently includes three papers and one wire-format specification:
 
 ### ◊ Proof-of-Context Wire Format v0.1: working specification
 
@@ -20,11 +20,11 @@ Byte-level shape of a PoC attestation as it travels between protocol participant
 - **Specification:** [SPEC-WIRE-FORMAT-v0.1.md](SPEC-WIRE-FORMAT-v0.1.md)
 - **Backing-Age extension:** [SPEC-BACKING-AGE-v0.1.md](SPEC-BACKING-AGE-v0.1.md) — un-resettable source-age propagation for agent pipelines (`backing` field over the `_poc` block): RFC 9111 `Age` semantics transferred to agent context, with a normative privacy rule (full backing sets never cross trust boundaries; a single scalar aggregate does). Reference implementation in `proof-of-context-impl` (`src/backing.rs`, 15 tests + runnable laundering demo), first deployment in the engram-live agent-memory sidecar.
 - **Reference implementations:** Rust ([proof-of-context-impl](https://github.com/Jc-asastu/proof-of-context-impl)), JavaScript (BaseOracle, TrustLayer), TypeScript (Vigil, PayClaw).
-- **Status:** v0.1 published 2026-04-30. All five reference implementations produce byte-identical canonical hashes and verify each other's signatures. Backing-Age extension added 2026-07-22.
+- **Status:** v0.1 published 2026-04-30. The four JavaScript and TypeScript implementations produce byte-identical canonical-JSON SHA-256 hashes and verify each other's signatures. The Rust crate uses a typed Merkle construction over the same fields, so its hashes differ by design (see the specification, §9). Backing-Age extension added 2026-07-22.
 
 ---
 
-The family also includes three papers:
+The papers:
 
 ### Proof of Context (v0.9.1): the framework paper
 
@@ -33,19 +33,22 @@ The original position paper. Names the gap in decentralized-ML protocols where c
 - **Paper (Markdown):** [paper/proof-of-context.md](paper/proof-of-context.md)
 - **Paper (PDF):** [paper/proof-of-context.pdf](paper/proof-of-context.pdf)
 - **Reference implementation (Phase 2):** [proof-of-context-impl](https://github.com/Jc-asastu/proof-of-context-impl) — Rust crate with real cryptography (SHA-256 Merkle, Ed25519, MockCommitter, MockSettlementGate, end-to-end integration tests).
-- **Status:** v0.9.1 (5 July 2026); position paper plus formal model (Theorem 1 + multi-party Corollary 1), and a reference-implementation section gating three of four freshness types against real oracles, with an on-chain dark-pool instantiation and a measured evaluation (§10.6). Public-share-ready.
+- **Status:** v0.9.1 (5 July 2026); position paper plus formal model (Theorem 1 + multi-party Corollary 1), and a reference-implementation section gating three of four freshness types against real oracles, with an on-chain dark-pool instantiation and a measured evaluation (§10.6).
+### Freshness-Gated Settlement for Attested Inference (v0.2): first applied paper
 
-### Proof of Context applied to Verifiable Inference (v0.1): first applied paper
+*Attestations expire; settlement does not notice.*
 
-A specialization of the v0.6 framework to commercial inference-as-a-service. Proposes a receipt-based dispute layer over TEE-attested inference. The central finding is that v0.6's four freshness dimensions do not preserve symmetrically when specialized to inference (one collapses, one renames, one new dimension emerges), and the resulting four dimensions partition asymmetrically (1-vs-3) by detection mode in a way that is itself the central conceptual contribution.
+A hardware attestation is a statement about a moment — DCAP collateral carries `issueDate` and `nextUpdate`, NVIDIA's attestation service bounds nonce bindings to twenty-four hours — and every party in the chain treats it as perishable except the one that pays against it. This paper makes the age of an attestation a settlement predicate, and gives the concrete attack that makes it necessary: **rent an attested GPU for one hour, keep the key and the quote, and sell months of attested capacity from cheaper hardware**, with every signature and every quote verifying correctly the whole time. Freshness turns the attestation from a one-time purchase into a recurring cost matched to the resource it attests.
 
-- **Abstract:** [paper-poc-inference-v0.1-abstract.md](paper-poc-inference-v0.1-abstract.md)
-- **Paper draft (working):** [paper-poc-inference-v0.1-pre1.md](paper-poc-inference-v0.1-pre1.md) — heart sections (§4 Four Dimensions, §5 Inference Receipt, §6 Threat Model) complete; surrounding sections forthcoming.
-- **Outline:** [paper-poc-inference-v0.1-outline.md](paper-poc-inference-v0.1-outline.md)
-- **Construction process:** [CASE-V0.7-EXTENSION.md](CASE-V0.7-EXTENSION.md), complete record of the seven rounds of adversarial review that produced the heart sections.
-- **Empirical companion (in private development):** cross-provider Qwen3 14B inference benchmark. Local consumer-tier baseline complete (RTX 5070, 9 cells, methodology documented). Cloud sweep and full publication pending. Findings will be reported inline in §8 of the paper when the study is complete.
-- **Companion crate (forthcoming):** Phase 3 of [proof-of-context-impl](https://github.com/Jc-asastu/proof-of-context-impl) will implement the InferenceReceipt module.
-- **Status:** v0.1 working draft published 2026-04-27; remaining sections in active writing.
+The verdict is per-dimension — established, contradicted, or unestablished — and deliberately cannot be collapsed into a boolean, because collapsing it is how cheap capacity comes to look like expensive capacity.
+
+- **Abstract:** [paper-poc-inference-v0.2-abstract.md](paper-poc-inference-v0.2-abstract.md)
+- **Paper draft (working):** [paper-poc-inference-v0.2-pre1.md](paper-poc-inference-v0.2-pre1.md) — §2 (prior art), §4–§6 (revised), §7 (the contribution), §9, §10, §12 written; §1, §3, §8, §11 still scaffolded.
+- **Prior-art scan:** [RESEARCH-LANDSCAPE-attested-inference.md](RESEARCH-LANDSCAPE-attested-inference.md) — fourteen entries verified against primary sources, including what is *occupied* and why the thesis rotated.
+- **Superseded:** [paper-poc-inference-v0.1-pre1.md](paper-poc-inference-v0.1-pre1.md) (2026-04-27), kept unaltered as a dated artifact. v0.2 carries five corrections to it, marked in place rather than silently edited.
+- **Construction process:** [CASE-V0.7-EXTENSION.md](CASE-V0.7-EXTENSION.md), the seven rounds of adversarial review behind the original heart sections.
+- **Companion crate:** [proof-of-context-impl](https://github.com/Jc-asastu/proof-of-context-impl) — Real Intel TDX verification (offline, pure Rust) and NVIDIA EAT token verification, an inference receipt with per-dimension verdict, and tests against a **real** hardware quote and real collateral. Measured: 272-byte receipts, 11–13 µs to sign, 27–39 µs to verify.
+- **Status:** v0.2 working draft, 2026-08-19.
 
 ### Proof of Context applied to Agent Memory (v0.1): third applied paper
 
@@ -65,7 +68,7 @@ A specialization of the framework to agent memory, argued as the purest surface:
 
 If you want the full framework, please read **v0.9.1** first ([paper/proof-of-context.md](paper/proof-of-context.md)). It is a complete position paper; §9 adds the formal model, soundness theorem, and multi-party corollary, and §10 reports the reference implementation (real canonical-state oracles, an on-chain dark-pool instantiation in §10.5, and a measured evaluation in §10.6).
 
-If you are interested in commercial inference attestation specifically, please read the **v0.1 abstract** plus **§4-§6 of v0.1** ([paper-poc-inference-v0.1-pre1.md](paper-poc-inference-v0.1-pre1.md)). These three sections present the complete conceptual contribution. The surrounding sections (introduction, background, problem statement, implementation, empirical illustration, limitations, future work, conclusion) are scaffolded in the outline and will populate in subsequent revisions.
+If you are interested in commercial inference attestation specifically, please read the **v0.2 abstract** ([paper-poc-inference-v0.2-abstract.md](paper-poc-inference-v0.2-abstract.md)) and **§7** of the v0.2 draft ([paper-poc-inference-v0.2-pre1.md](paper-poc-inference-v0.2-pre1.md)), which holds the contribution. Sections still scaffolded are listed in the status line above.
 
 If you are curious about *how* a paper at this scope is built using AI-assisted adversarial review, please read **CASE-V0.7-EXTENSION.md**. It documents the seven rounds of review, what each round caught, what was accepted vs pushed back on, and the self-check protocol (bidirectional mapping + outline-consistency + cardinality scan) that emerged from the process.
 
@@ -73,7 +76,7 @@ If you are curious about *how* a paper at this scope is built using AI-assisted 
 
 ## Citation
 
-Both papers are citable. For v0.6:
+The framework paper (v0.9.1) and the inference paper are citable. For the framework paper:
 
 ```bibtex
 @misc{maisu2026proofofcontext,
@@ -86,7 +89,7 @@ Both papers are citable. For v0.6:
 }
 ```
 
-For v0.1 applied:
+For the inference paper (v0.1, superseded by the v0.2 working draft):
 
 ```bibtex
 @misc{maisu2026pocinference,
@@ -114,8 +117,6 @@ Issues, corrections, replication reports, and co-authorship inquiries are welcom
 ## Related work (from the author)
 
 - [proof-of-context-impl](https://github.com/Jc-asastu/proof-of-context-impl) — Rust reference implementation of the framework's primitives
-- [Hermetic Computing (kybalion)](https://github.com/Jc-asastu/kybalion) — Rust framework formalizing the Seven Hermetic Principles as computational primitives
-- [intent-cipher](https://crates.io/crates/intent-cipher) — Research crate exploring intent-keyed stream ciphers (published v0.2 after public v0.1 reframe)
 - [SUR Protocol](https://github.com/Jc-asastu/sur-protocol) — Perpetual futures DEX with agent-native execution layer (12 contracts, 531 Foundry tests)
 - [Opus narrative](https://jc-asastu.github.io/opus/) — Six-week human-AI research collaboration documentation
 
@@ -130,7 +131,3 @@ Issues, corrections, replication reports, and co-authorship inquiries are welcom
 ## Contact
 
 Juan Cruz Maisu · [juancmaisu@outlook.com](mailto:juancmaisu@outlook.com) · [github.com/Jc-asastu](https://github.com/Jc-asastu) · [linkedin.com/in/juan-cruz-maisu-b4b610308](https://www.linkedin.com/in/juan-cruz-maisu-b4b610308/)
-
----
-
-Juan Cruz Maisú ♥
